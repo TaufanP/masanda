@@ -17,6 +17,7 @@ interface TouchableTextProps {
   textProps?: TextInputProps;
   buttonStyle?: Object;
   bg?: boolean;
+  onPress?: () => void;
 }
 
 interface StyleProps {
@@ -29,6 +30,7 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   textProps,
   buttonStyle,
   bg = true,
+  onPress,
 }) => {
   const s = styles({ bg });
   return (
@@ -37,6 +39,7 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
       style={[buttonStyle, s.container]}
       width="auto"
       height="auto"
+      onPress={onPress}
     >
       <Text {...textProps} style={s.textStyle}>
         {children}

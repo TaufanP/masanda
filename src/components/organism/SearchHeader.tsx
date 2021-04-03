@@ -2,7 +2,7 @@ import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { DArrow, Scan } from "../../../assets";
-import { myMemo } from "../../hooks";
+import { myMemo, myCallback } from "../../hooks";
 import {
   colorsPalette as cp,
   spacing as sp,
@@ -18,8 +18,8 @@ interface SearchHeader {
 const SearchHeader: FC<SearchHeader> = () => {
   const s = styles();
   const styleScan = myMemo({ marginLeft: sp.s });
-  const namaProps = myMemo({ onPress: () => console.log("test") });
-  const hargaProps = myMemo({ onPress: () => console.log("test") });
+  const namePress = myCallback(() => console.log("hasil"));
+  const pricepress = myCallback(() => console.log("hasil"));
 
   return (
     <View style={s.container}>
@@ -31,13 +31,13 @@ const SearchHeader: FC<SearchHeader> = () => {
       </View>
       <View style={s.section}>
         <TouchableText
-          touchableProps={namaProps}
+          onPress={namePress}
           buttonStyle={{ marginRight: sp.xm }}
           bg={false}
         >
           Nama <DArrow />
         </TouchableText>
-        <TouchableText touchableProps={hargaProps} bg={false}>
+        <TouchableText onPress={pricepress} bg={false}>
           Harga <DArrow />
         </TouchableText>
       </View>

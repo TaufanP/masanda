@@ -33,7 +33,11 @@ const EmptyState: FC<PropsWithChildren<EmptyStateProps>> = () => {
       <TextItem type="semiHeaderC">Anda belum menambahkan produk.</TextItem>
       <TextItem type="defaultC">Tambah produk sekarang.</TextItem>
       <Gap vertical={sp.xxxm} />
-      <Touchable vertical={sp.s} horizontal={sp.xxxm}>
+      <Touchable
+        vertical={sp.s}
+        horizontal={sp.xxxm}
+        onPress={() => console.log("Tambah")}
+      >
         <View style={s.rowCont}>
           <TextItem type="defaultW">TAMBAH</TextItem>
           <Gap horizontal={sp.s} />
