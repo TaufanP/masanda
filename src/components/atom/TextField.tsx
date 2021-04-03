@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, memo } from "react";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 import {
   colorsPalette as cp,
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   textInputErr: { ...globalStyle.textInputStyle, color: cp.text1 },
 });
 
-export default TextField;
+export default memo(TextField);

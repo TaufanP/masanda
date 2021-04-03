@@ -5,13 +5,22 @@ import {
   TouchableOpacityProps,
   TextInputProps,
 } from "react-native";
-import { fontFamily as ff } from "../../constants";
+import {
+  fontFamily as ff,
+  colorsPalette as cp,
+  spacing as sp,
+} from "../../constants";
 import { Touchable } from "../atom";
 
 interface TouchableTextProps {
   touchableProps?: TouchableOpacityProps;
   textProps?: TextInputProps;
   buttonStyle?: Object;
+  bg?: boolean;
+}
+
+interface StyleProps {
+  bg: boolean;
 }
 
 const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
@@ -19,8 +28,9 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   touchableProps,
   textProps,
   buttonStyle,
+  bg = true,
 }) => {
-  const s = styles();
+  const s = styles({ bg });
   return (
     <Touchable
       {...touchableProps}
@@ -35,11 +45,18 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   );
 };
 
-const styles = () =>
+const styles = ({ bg }: StyleProps) =>
   StyleSheet.create({
-    textStyle: { fontFamily: ff.quicksandMedium },
+    textStyle: {
+      fontFamily: ff.quicksandMedium,
+      paddingVertical: bg ? sp.xxs : 0,
+      paddingHorizontal: bg ? sp.s : 0,
+      color: bg ? cp.white : cp.text1,
+      justifyContent: bg ? "center" : "flex-start",
+      alignItems: bg ? "center" : "flex-start",
+    },
     container: {
-      backgroundColor: "transparent",
+      backgroundColor: bg ? cp.purple2 : "transparent",
     },
   });
 
