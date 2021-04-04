@@ -8,16 +8,24 @@ import {
 
 interface TextFieldProps {
   isError?: boolean;
+  style?: any;
+  setter?: any;
 }
 
-const TextField: FC<TextFieldProps & TextInputProps> = (props) => {
-  const { isError = false, secureTextEntry } = props;
+const TextField: FC<TextFieldProps & TextInputProps> = ({
+  isError = false,
+  secureTextEntry,
+  style,
+  setter = (e: string) => console.log(e),
+  ...props
+}) => {
   const [isVisible, setIsVisible] = useState(secureTextEntry);
   return (
-    <View style={isError ? styles.formErr : styles.form}>
+    <View style={[isError ? styles.formErr : styles.form, style]}>
       <TextInput
         style={isError ? styles.textInputErr : styles.textInput}
         {...props}
+        onChangeText={(e) => setter(e)}
         secureTextEntry={isVisible}
         placeholderTextColor={cp.text2}
       />

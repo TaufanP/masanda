@@ -17,15 +17,15 @@ interface SearchHeader {
 
 const SearchHeader: FC<SearchHeader> = () => {
   const s = styles();
-  const styleScan = myMemo({ marginLeft: sp.s });
+  const styleInput = myMemo({ marginRight: sp.s });
   const namePress = myCallback(() => console.log("hasil"));
   const pricepress = myCallback(() => console.log("hasil"));
 
   return (
     <View style={s.container}>
       <View style={[s.section, s.scan]}>
-        <TextField placeholder={str.findGoods} />
-        <Touchable width={40} height={40} style={styleScan} isFlex={false}>
+        <TextField placeholder={str.findGoods} style={styleInput} />
+        <Touchable width={40} height={40} isFlex={false}>
           <Scan width={24} height={24} fill={"#FFF"} />
         </Touchable>
       </View>

@@ -2,6 +2,8 @@ import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC, useState } from "react";
 import { FlatList } from "react-native";
 import { Plus } from "../../assets";
+import { myCallback } from "../hooks";
+import { routesName as r } from "../constants";
 import {
   AppCanvas,
   EmptyState,
@@ -10,11 +12,12 @@ import {
 } from "../components";
 
 interface HomeProps {
-  navigation: CompositeNavigationProp<any, any>;
+  navigation?: CompositeNavigationProp<any, any>;
 }
 
-const Home: FC<HomeProps> = () => {
+const Home: FC<HomeProps> = ({ navigation }) => {
   const [products, setProducts] = useState([]);
+  const addPress = myCallback(() => navigation?.navigate(r.EDITING));
   return (
     <AppCanvas>
       <SearchHeader />
@@ -22,7 +25,7 @@ const Home: FC<HomeProps> = () => {
         contentContainerStyle={{ flex: 1 }}
         data={products}
         renderItem={() => <></>}
-        ListEmptyComponent={<EmptyState />}
+        ListEmptyComponent={<EmptyState onPress={addPress} />}
       />
       {products.length !== 0 && (
         <FloatButton>

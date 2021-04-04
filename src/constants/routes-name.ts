@@ -1,6 +1,7 @@
 const routesName = {
   SPLASH: 'SPLASH',
-  HOME: 'hOME',
+  HOME: 'HOME',
+  EDITING: 'EDITING',
 };
 
 export default routesName;

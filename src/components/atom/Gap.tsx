@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren, memo } from "react";
 import { View } from "react-native";
 
 interface GapProps {
@@ -29,4 +29,4 @@ const Gap: FC<PropsWithChildren<GapProps>> = ({
   );
 };
 
-export default Gap;
+export default memo(Gap);

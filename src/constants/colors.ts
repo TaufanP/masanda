@@ -7,6 +7,8 @@ const colorsPalette = {
   white: "#FFFFFF",
   white0: "#f4f4f4",
   white1: "#ECECEC",
+  white2: "#D9D9D9",
+  white3: "#A9A9A9",
 };
 
 export default colorsPalette;

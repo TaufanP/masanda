@@ -3,13 +3,12 @@ import {
   StyleSheet,
   TouchableNativeFeedback,
   TouchableNativeFeedbackProps,
-  TouchableOpacityProps,
   View,
 } from "react-native";
 import { colorsPalette as cp } from "../../constants";
 
 interface TouchableProps {
-  onPress?: any;
+  onPress?: () => void;
   width?: number | string;
   height?: number | string;
   vertical?: number;
@@ -27,7 +26,6 @@ interface StyleProps {
 }
 
 const Touchable: FC<
-  // PropsWithChildren<TouchableProps & TouchableOpacityProps>
   PropsWithChildren<TouchableProps & TouchableNativeFeedbackProps>
 > = ({
   children,
@@ -41,16 +39,6 @@ const Touchable: FC<
   ...props
 }) => {
   const s = styles({ width, height, vertical, horizontal, isFlex });
-  // return (
-  //   <TouchableOpacity
-  //     activeOpacity={0.8}
-  //     {...props}
-  //     style={[s.container, style]}
-  //     onPress={onPress}
-  //   >
-  //     {children}
-  //   </TouchableOpacity>
-  // );
   return (
     <View style={s.parent}>
       <TouchableNativeFeedback
@@ -66,7 +54,7 @@ const Touchable: FC<
 
 const styles = ({ width, height, vertical, horizontal, isFlex }: StyleProps) =>
   StyleSheet.create({
-    parent: { borderRadius: 8 },
+    parent: { borderRadius: 8, overflow: "hidden" },
     container: {
       width: isFlex ? "auto" : width,
       height: isFlex ? "auto" : height,
