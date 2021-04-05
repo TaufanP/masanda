@@ -14,6 +14,7 @@ interface TouchableProps {
   vertical?: number;
   horizontal?: number;
   isFlex?: boolean;
+  backgroundColor?: string;
 }
 
 interface StyleProps {
@@ -23,6 +24,7 @@ interface StyleProps {
   horizontal?: number;
   style?: Object;
   isFlex: boolean;
+  backgroundColor?: string;
 }
 
 const Touchable: FC<
@@ -35,10 +37,18 @@ const Touchable: FC<
   vertical,
   horizontal,
   style,
+  backgroundColor,
   onPress = () => console.log("test"),
   ...props
 }) => {
-  const s = styles({ width, height, vertical, horizontal, isFlex });
+  const s = styles({
+    width,
+    height,
+    vertical,
+    horizontal,
+    isFlex,
+    backgroundColor,
+  });
   return (
     <View style={s.parent}>
       <TouchableNativeFeedback
@@ -52,13 +62,20 @@ const Touchable: FC<
   );
 };
 
-const styles = ({ width, height, vertical, horizontal, isFlex }: StyleProps) =>
+const styles = ({
+  width,
+  height,
+  vertical,
+  horizontal,
+  isFlex,
+  backgroundColor = cp.purple2,
+}: StyleProps) =>
   StyleSheet.create({
     parent: { borderRadius: 8, overflow: "hidden" },
     container: {
       width: isFlex ? "auto" : width,
       height: isFlex ? "auto" : height,
-      backgroundColor: cp.purple2,
+      backgroundColor,
       justifyContent: "center",
       alignItems: "center",
       borderRadius: 8,

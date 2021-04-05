@@ -10,6 +10,8 @@ interface TextFieldProps {
   isError?: boolean;
   style?: any;
   setter?: any;
+  isRow?: boolean;
+  useGap?: boolean;
 }
 
 const TextField: FC<TextFieldProps & TextInputProps> = ({
@@ -17,11 +19,19 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
   secureTextEntry,
   style,
   setter = (e: string) => console.log(e),
+  isRow = false,
+  useGap = true,
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(secureTextEntry);
   return (
-    <View style={[isError ? styles.formErr : styles.form, style]}>
+    <View
+      style={[
+        isError ? styles.formErr : styles.form,
+        style,
+        { flex: isRow ? 1 : 0, marginBottom: useGap ? sp.xxxm : 0 },
+      ]}
+    >
       <TextInput
         style={isError ? styles.textInputErr : styles.textInput}
         {...props}
@@ -46,15 +56,14 @@ const globalStyle = StyleSheet.create({
     backgroundColor: cp.white1,
     borderRadius: 8,
     paddingHorizontal: sp.xxxm,
-    flex: 1,
     flexDirection: "row",
+    height: 40,
   },
   textInputStyle: {
     fontFamily: ff.quicksand,
     color: cp.text1,
     flex: 1,
     width: 40,
-    height: 40,
   },
 });
 

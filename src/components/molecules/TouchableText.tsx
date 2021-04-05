@@ -18,6 +18,7 @@ interface TouchableTextProps {
   buttonStyle?: Object;
   bg?: boolean;
   onPress?: () => void;
+  textStyle?: any;
 }
 
 interface StyleProps {
@@ -30,6 +31,7 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   textProps,
   buttonStyle,
   bg = true,
+  textStyle,
   onPress,
 }) => {
   const s = styles({ bg });
@@ -41,7 +43,7 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
       height="auto"
       onPress={onPress}
     >
-      <Text {...textProps} style={s.textStyle}>
+      <Text {...textProps} style={[s.text, textStyle]}>
         {children}
       </Text>
     </Touchable>
@@ -50,7 +52,7 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
 
 const styles = ({ bg }: StyleProps) =>
   StyleSheet.create({
-    textStyle: {
+    text: {
       fontFamily: ff.quicksandMedium,
       paddingVertical: bg ? sp.xxs : 0,
       paddingHorizontal: bg ? sp.s : 0,

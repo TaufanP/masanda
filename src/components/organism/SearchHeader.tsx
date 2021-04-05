@@ -24,7 +24,12 @@ const SearchHeader: FC<SearchHeader> = () => {
   return (
     <View style={s.container}>
       <View style={[s.section, s.scan]}>
-        <TextField placeholder={str.findGoods} style={styleInput} />
+        <TextField
+          placeholder={str.findGoods}
+          style={styleInput}
+          isRow={true}
+          useGap={false}
+        />
         <Touchable width={40} height={40} isFlex={false}>
           <Scan width={24} height={24} fill={"#FFF"} />
         </Touchable>
