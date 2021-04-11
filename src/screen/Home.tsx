@@ -12,15 +12,15 @@ import {
 } from "../components";
 
 interface HomeProps {
-  navigation?: CompositeNavigationProp<any, any>;
+  navigation: CompositeNavigationProp<any, any>;
 }
 
 const Home: FC<HomeProps> = ({ navigation }) => {
   const [products, setProducts] = useState([]);
-  const addPress = myCallback(() => navigation?.navigate(r.EDITING));
+  const addPress = myCallback(() => navigation.navigate(r.EDITING));
   return (
     <AppCanvas>
-      <SearchHeader />
+      <SearchHeader navigation={navigation} />
       <FlatList
         contentContainerStyle={{ flex: 1 }}
         data={products}

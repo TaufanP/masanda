@@ -12,6 +12,7 @@ interface TextFieldProps {
   setter?: any;
   isRow?: boolean;
   useGap?: boolean;
+  optKey?: string;
 }
 
 const TextField: FC<TextFieldProps & TextInputProps> = ({
@@ -21,6 +22,7 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
   setter = (e: string) => console.log(e),
   isRow = false,
   useGap = true,
+  optKey = "none",
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(secureTextEntry);
@@ -35,7 +37,7 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
       <TextInput
         style={isError ? styles.textInputErr : styles.textInput}
         {...props}
-        onChangeText={(e) => setter(e)}
+        onChangeText={(e) => setter(e, optKey)}
         secureTextEntry={isVisible}
         placeholderTextColor={cp.text2}
       />

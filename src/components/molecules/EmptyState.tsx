@@ -14,7 +14,7 @@ interface EmptyStateProps {
   touchableProps?: TouchableOpacityProps;
   buttonStyle?: Object;
   size?: number;
-  onPress?: () => void;
+  onPress: () => void;
 }
 
 const EmptyState: FC<PropsWithChildren<EmptyStateProps>> = ({ onPress }) => {

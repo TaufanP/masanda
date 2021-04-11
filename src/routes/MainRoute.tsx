@@ -3,7 +3,7 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import React, { FC } from "react";
-import { Home, Splash, Editing } from "../screen";
+import { Home, Splash, Editing, Scanner } from "../screen";
 import { routesName } from "../constants";
 
 const Stack = createStackNavigator();
@@ -32,6 +32,7 @@ const MainRoute: FC<MainRouteProps> = (props) => {
       <Stack.Screen name={routesName.SPLASH} component={Splash} />
       <Stack.Screen name={routesName.HOME} component={Home} />
       <Stack.Screen name={routesName.EDITING} component={Editing} />
+      <Stack.Screen name={routesName.SCANNER} component={Scanner} />
     </Stack.Navigator>
   );
 };

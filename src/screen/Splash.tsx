@@ -6,7 +6,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { routesName as r } from "../constants";
 
 interface SplashProps {
-  navigation?: CompositeNavigationProp<any, any>;
+  navigation: CompositeNavigationProp<any, any>;
 }
 
 const Splash: FC<SplashProps> = ({ navigation }) => {

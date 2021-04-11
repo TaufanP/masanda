@@ -84,4 +84,4 @@ const styles = ({
     },
   });
 
-export default memo(Touchable);
+export default Touchable;

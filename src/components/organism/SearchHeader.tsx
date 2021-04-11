@@ -10,16 +10,17 @@ import {
 } from "../../constants";
 import { TextField, Touchable } from "../atom/";
 import { TouchableText } from "../molecules";
+import { routesName as r } from "../../constants";
 
 interface SearchHeader {
-  navigation?: CompositeNavigationProp<any, any>;
+  navigation: CompositeNavigationProp<any, any>;
 }
 
-const SearchHeader: FC<SearchHeader> = () => {
+const SearchHeader: FC<SearchHeader> = ({ navigation }) => {
   const s = styles();
   const styleInput = myMemo({ marginRight: sp.s });
-  const namePress = myCallback(() => console.log("hasil"));
-  const pricepress = myCallback(() => console.log("hasil"));
+  // const namePress = myCallback(() => console.log("hasilnamna"));
+  // const pricepress = myCallback(() => console.log("hasilharga"));
 
   return (
     <View style={s.container}>
@@ -30,19 +31,24 @@ const SearchHeader: FC<SearchHeader> = () => {
           isRow={true}
           useGap={false}
         />
-        <Touchable width={40} height={40} isFlex={false}>
+        <Touchable
+          width={40}
+          height={40}
+          isFlex={false}
+          onPress={() => navigation.navigate(r.SCANNER)}
+        >
           <Scan width={24} height={24} fill={"#FFF"} />
         </Touchable>
       </View>
       <View style={s.section}>
         <TouchableText
-          onPress={namePress}
+          onPress={() => console.log("hasilnamna")}
           buttonStyle={{ marginRight: sp.xm }}
           bg={false}
         >
           Nama <DArrow />
         </TouchableText>
-        <TouchableText onPress={pricepress} bg={false}>
+        <TouchableText onPress={() => console.log("hasilnamna")} bg={false}>
           Harga <DArrow />
         </TouchableText>
       </View>
