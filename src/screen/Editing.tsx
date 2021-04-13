@@ -43,7 +43,7 @@ const Editing: FC<EditingProps> = () => {
       <ImgField />
       <FormContainer vertical={48}>
         <TextField
-          placeholder={"Barcode Barang (Optional)"}
+          placeholder={"Barcode Barang (Opsional)"}
           keyboardType="numeric"
           setter={_setter}
           optKey="barcode"
@@ -60,6 +60,7 @@ const Editing: FC<EditingProps> = () => {
           optKey="price"
         />
         <TouchableText
+          buttonStyle={{ height: 50 }}
           textStyle={{ fontSize: ts.xxxm, fontFamily: ff.quicksandBold }}
           onPress={() => console.log(dataForm)}
         >

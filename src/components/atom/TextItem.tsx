@@ -1,31 +1,57 @@
 import React, { FC, memo, PropsWithChildren } from "react";
-import { StyleSheet, Text, TextProps } from "react-native";
+import { StyleSheet, Text, TextProps, View } from "react-native";
 import {
   fontFamily as ff,
   textSize as ts,
   colorsPalette as cp,
+  spacing as sp,
 } from "../../constants";
 
 interface TextItemProps {
   type?: string;
+  isNumber?: boolean;
+  unit?: string;
 }
 
 const TextItem: FC<PropsWithChildren<TextItemProps & TextProps>> = ({
+  isNumber = false,
   children,
   style,
   type = "default",
+  unit = "Rp",
   ...props
 }) => {
   const s: { [key: string]: any } = styles();
+
   return (
-    <Text {...props} style={[s.default, style, s[type]]}>
-      {children}
-    </Text>
+    <View style={s.container}>
+      {isNumber && <Text style={s.unitText}>{unit} </Text>}
+      <Text {...props} style={[s.default, style, s[type]]}>
+        {isNumber && children
+          ? `${children.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}`
+          : children}
+      </Text>
+    </View>
   );
 };
 
 const styles = () =>
   StyleSheet.create({
+    unitText: {
+      color: cp.purple1,
+    },
+    container: { flexDirection: "row", alignItems: "flex-end" },
+    productPrice: {
+      fontSize: ts.xxm,
+      color: cp.purple1,
+      fontFamily: ff.quicksandBold,
+    },
+    productName: {
+      marginTop: sp.xxs,
+      marginBottom: sp.xxxs,
+      color: cp.text1,
+      fontFamily: ff.quicksandMedium,
+    },
     default: {
       fontFamily: ff.quicksand,
     },

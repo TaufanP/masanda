@@ -1,12 +1,19 @@
 import React, { FC, memo, PropsWithChildren } from "react";
-import { StyleSheet, TouchableOpacityProps, View } from "react-native";
+import {
+  Alert,
+  GestureResponderEvent,
+  StyleSheet,
+  TouchableNativeFeedbackProps,
+  View,
+} from "react-native";
 import { fontFamily as ff, colorsPalette as cp } from "../../constants";
 import { Touchable } from "../atom";
 
 interface FloatButtonProps {
-  touchableProps?: TouchableOpacityProps;
+  touchableProps?: TouchableNativeFeedbackProps;
   buttonStyle?: Object;
   size?: number;
+  onPress: any;
 }
 
 interface StylesProps {
@@ -18,11 +25,13 @@ const FloatButton: FC<PropsWithChildren<FloatButtonProps>> = ({
   touchableProps,
   buttonStyle,
   size = 56,
+  onPress,
 }) => {
   const s = styles({ size });
   return (
     <View style={s.floatCont}>
       <Touchable
+        onPress={onPress}
         {...touchableProps}
         style={[buttonStyle, s.container]}
         width={size}

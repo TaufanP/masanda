@@ -1,5 +1,6 @@
 import React, { FC, memo, PropsWithChildren } from "react";
 import {
+  GestureResponderEvent,
   StyleSheet,
   TouchableNativeFeedback,
   TouchableNativeFeedbackProps,
@@ -7,14 +8,21 @@ import {
 } from "react-native";
 import { colorsPalette as cp } from "../../constants";
 
+interface HitSlopProps {
+  top?: number;
+  left?: number;
+  right?: number;
+  bottom?: number;
+}
 interface TouchableProps {
-  onPress?: () => void;
+  onPress?: Function;
   width?: number | string;
   height?: number | string;
   vertical?: number;
   horizontal?: number;
   isFlex?: boolean;
   backgroundColor?: string;
+  hitslop?: HitSlopProps;
 }
 
 interface StyleProps {
@@ -39,6 +47,7 @@ const Touchable: FC<
   style,
   backgroundColor,
   onPress = () => console.log("test"),
+  hitslop,
   ...props
 }) => {
   const s = styles({
@@ -55,6 +64,7 @@ const Touchable: FC<
         {...props}
         onPress={onPress}
         background={TouchableNativeFeedback.Ripple("#fff9", true)}
+        hitSlop={hitslop}
       >
         <View style={[s.container, style]}>{children}</View>
       </TouchableNativeFeedback>
