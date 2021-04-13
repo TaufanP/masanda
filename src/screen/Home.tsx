@@ -1,7 +1,8 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import axios from "axios";
 import React, { FC, useEffect, useState } from "react";
-import { FlatList, View, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
+import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import { Plus } from "../../assets";
 import api from "../api";
 import {
@@ -11,7 +12,11 @@ import {
   ProductTile,
   SearchHeader,
 } from "../components";
-import { routesName as r, spacing as sp } from "../constants";
+import {
+  routesName as r,
+  skeletonLayout as sl,
+  spacing as sp,
+} from "../constants";
 import { MainProduct } from "../constants/types";
 import { myCallback } from "../hooks";
 
@@ -21,7 +26,8 @@ interface HomeProps {
 
 const Home: FC<HomeProps> = ({ navigation }) => {
   const s = styles();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<MainProduct[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const addPress = myCallback(() => navigation.navigate(r.EDITING));
   const _getProducts = async () => {
     try {
@@ -29,8 +35,10 @@ const Home: FC<HomeProps> = ({ navigation }) => {
         data: { data },
       } = await axios.get(`${api.product.getProducts}`);
       setProducts(data);
+      setIsLoading(false);
     } catch (error) {
-      console.log(`${api.product.getProducts}`, error);
+      console.log("Home, _getProducts()", error);
+      setIsLoading(false);
     }
   };
 
@@ -47,19 +55,25 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   return (
     <AppCanvas>
       <SearchHeader navigation={navigation} />
-      <FlatList
-        columnWrapperStyle={{ justifyContent: "space-between" }}
-        numColumns={2}
-        keyExtractor={(item: MainProduct) => `${item.barcode}`}
-        contentContainerStyle={{
-          flex: 1,
-          paddingHorizontal: sp.xxxm,
-          paddingTop: sp.xm,
-        }}
-        data={products}
-        renderItem={({ item }) => <ProductTile item={item} />}
-        ListEmptyComponent={<EmptyState onPress={addPress} />}
-      />
+      <SkeletonContent
+        containerStyle={{ flex: 1 }}
+        isLoading={isLoading}
+        layout={sl.home}
+      >
+        <FlatList
+          columnWrapperStyle={{ justifyContent: "space-between" }}
+          numColumns={2}
+          keyExtractor={(item) => `${item.barcode}`}
+          contentContainerStyle={{
+            flex: 1,
+            paddingHorizontal: sp.xxxm,
+            paddingTop: sp.xm,
+          }}
+          data={products}
+          renderItem={({ item }) => <ProductTile item={item} />}
+          ListEmptyComponent={<EmptyState onPress={addPress} />}
+        />
+      </SkeletonContent>
       {products.length !== 0 && (
         <FloatButton onPress={addPress}>
           <View style={s.float}>
