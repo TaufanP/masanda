@@ -37,7 +37,7 @@ const StaticBottomSheet = ({
 }) => {
   const s = styles();
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(height)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
   const fadeIn = () => {

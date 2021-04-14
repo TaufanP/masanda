@@ -14,21 +14,24 @@ const { width, height } = Dimensions.get("screen");
 
 interface ImgPreview {
   type?: string;
+  uri?: string;
 }
 
-const ImgPreview: FC<ImgPreview> = ({ ...props }) => {
+const ImgPreview: FC<ImgPreview> = ({ uri }) => {
   const s = styles();
   return (
     <View style={s.container}>
-      {false ? (
-        <Image source={DummyProduct} style={s.img} />
+      {uri ? (
+        <Image source={{ uri }} style={s.img} />
       ) : (
         <View style={s.placeholderBg} />
       )}
-      <View style={s.detailCont}>
-        <PlusImgField style={s.iconStyle} />
-        <TextItem>{str.addImg}</TextItem>
-      </View>
+      {!uri && (
+        <View style={s.detailCont}>
+          <PlusImgField style={s.iconStyle} />
+          <TextItem>{str.addImg}</TextItem>
+        </View>
+      )}
     </View>
   );
 };

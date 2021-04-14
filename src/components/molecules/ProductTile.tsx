@@ -88,6 +88,7 @@ const styles = () =>
       height: tileHeight,
       backgroundColor: cp.white,
       borderRadius: 8,
+      marginBottom: sp.xxxm,
     },
   });
 

@@ -1,7 +1,7 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import axios from "axios";
 import React, { FC, useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, RefreshControl } from "react-native";
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import { Plus } from "../../assets";
 import api from "../api";
@@ -28,19 +28,33 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   const s = styles();
   const [products, setProducts] = useState<MainProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const addPress = myCallback(() => navigation.navigate(r.EDITING));
-  const _getProducts = async () => {
-    try {
-      const {
-        data: { data },
-      } = await axios.get(`${api.product.getProducts}`);
-      setProducts(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.log("Home, _getProducts():", error);
-      setIsLoading(false);
-    }
+
+  const _getProducts = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          data: { data },
+        } = await axios.get(`${api.product.getProducts}`);
+        resolve({ is_success: true });
+        setProducts(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log("Home, _getProducts():", error);
+        reject({ is_success: false });
+        setIsLoading(false);
+      }
+    });
   };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    const { is_success }: any = await _getProducts();
+    if (is_success) setRefreshing(false);
+  };
+
+  const refreshControl = <RefreshControl {...{ refreshing, onRefresh }} />;
 
   useEffect(() => {
     let isSubscribed = true;
@@ -65,13 +79,14 @@ const Home: FC<HomeProps> = ({ navigation }) => {
           numColumns={2}
           keyExtractor={(item) => `${item.barcode}`}
           contentContainerStyle={{
-            flex: 1,
             paddingHorizontal: sp.xxxm,
-            paddingTop: sp.xm,
+            paddingVertical: sp.xm,
           }}
           data={products}
           renderItem={({ item }) => <ProductTile item={item} />}
           ListEmptyComponent={<EmptyState onPress={addPress} />}
+          refreshControl={refreshControl}
+          initialNumToRender={4}
         />
       </SkeletonContent>
       {products.length !== 0 && (

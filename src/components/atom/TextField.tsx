@@ -13,6 +13,7 @@ interface TextFieldProps {
   isRow?: boolean;
   useGap?: boolean;
   optKey?: string;
+  ref?: any;
 }
 
 const TextField: FC<TextFieldProps & TextInputProps> = ({
@@ -23,6 +24,7 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
   isRow = false,
   useGap = true,
   optKey = "none",
+  ref,
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(secureTextEntry);
@@ -40,6 +42,7 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
         onChangeText={(e) => setter(e, optKey)}
         secureTextEntry={isVisible}
         placeholderTextColor={cp.text2}
+        ref={ref}
       />
       {/* {secureTextEntry && (
         <IconEye
@@ -77,4 +80,4 @@ const styles = StyleSheet.create({
   textInputErr: { ...globalStyle.textInputStyle, color: cp.text1 },
 });
 
-export default memo(TextField);
+export default TextField;

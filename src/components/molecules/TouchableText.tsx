@@ -21,6 +21,8 @@ interface TouchableTextProps {
   textStyle?: any;
   isAuto?: boolean;
   type?: string;
+  isLoading?: boolean;
+  loadingColor?: string;
 }
 
 interface StyleProps {
@@ -37,6 +39,8 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   onPress,
   isAuto,
   type,
+  isLoading,
+  loadingColor,
 }) => {
   const s = styles({ bg });
   return (
@@ -47,6 +51,8 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
       height={isAuto ? "auto" : "100%"}
       onPress={onPress}
       isFlex={isAuto}
+      isLoading={isLoading}
+      loadingColor={loadingColor}
     >
       <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
         {children}

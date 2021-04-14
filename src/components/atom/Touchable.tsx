@@ -1,6 +1,6 @@
 import React, { FC, memo, PropsWithChildren } from "react";
 import {
-  GestureResponderEvent,
+  ActivityIndicator,
   StyleSheet,
   TouchableNativeFeedback,
   TouchableNativeFeedbackProps,
@@ -23,6 +23,8 @@ interface TouchableProps {
   isFlex?: boolean;
   backgroundColor?: string;
   hitslop?: HitSlopProps;
+  isLoading?: boolean;
+  loadingColor?: string;
 }
 
 interface StyleProps {
@@ -48,6 +50,8 @@ const Touchable: FC<
   backgroundColor,
   onPress = () => console.log("test"),
   hitslop,
+  isLoading,
+  loadingColor = "#FFF",
   ...props
 }) => {
   const s = styles({
@@ -66,7 +70,9 @@ const Touchable: FC<
         background={TouchableNativeFeedback.Ripple("#fff9", true)}
         hitSlop={hitslop}
       >
-        <View style={[s.container, style]}>{children}</View>
+        <View style={[s.container, style]}>
+          {isLoading ? <ActivityIndicator color={loadingColor} /> : children}
+        </View>
       </TouchableNativeFeedback>
     </View>
   );

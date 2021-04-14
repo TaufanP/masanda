@@ -7,14 +7,15 @@ const { width, height } = Dimensions.get("screen");
 interface ImgField {
   type?: string;
   onPress?: any;
+  uri?: string;
 }
 
-const ImgField: FC<ImgField> = ({ onPress }) => {
+const ImgField: FC<ImgField> = ({ onPress, uri }) => {
   const s = styles();
   return (
     <View>
       <View style={{ position: "absolute" }}>
-        <ImgPreview />
+        <ImgPreview uri={uri} />
       </View>
       <Touchable backgroundColor="transparent" onPress={onPress}>
         <View style={s.container} />
