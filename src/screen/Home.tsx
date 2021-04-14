@@ -37,7 +37,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
       setProducts(data);
       setIsLoading(false);
     } catch (error) {
-      console.log("Home, _getProducts()", error);
+      console.log("Home, _getProducts():", error);
       setIsLoading(false);
     }
   };

@@ -1,3 +1,4 @@
 import SearchHeader from "./SearchHeader";
+import StaticBottomSheet from "./StaticBottomSheet";
 
-export { SearchHeader };
+export { SearchHeader, StaticBottomSheet };

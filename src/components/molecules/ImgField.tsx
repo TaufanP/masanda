@@ -6,16 +6,17 @@ const { width, height } = Dimensions.get("screen");
 
 interface ImgField {
   type?: string;
+  onPress?: any;
 }
 
-const ImgField: FC<ImgField> = ({ ...props }) => {
+const ImgField: FC<ImgField> = ({ onPress }) => {
   const s = styles();
   return (
     <View>
       <View style={{ position: "absolute" }}>
         <ImgPreview />
       </View>
-      <Touchable backgroundColor="transparent">
+      <Touchable backgroundColor="transparent" onPress={onPress}>
         <View style={s.container} />
       </Touchable>
     </View>

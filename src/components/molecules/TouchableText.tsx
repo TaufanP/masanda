@@ -10,7 +10,7 @@ import {
   colorsPalette as cp,
   spacing as sp,
 } from "../../constants";
-import { Touchable } from "../atom";
+import { Touchable, TextItem } from "../atom";
 
 interface TouchableTextProps {
   touchableProps?: TouchableOpacityProps;
@@ -19,6 +19,8 @@ interface TouchableTextProps {
   bg?: boolean;
   onPress?: () => void;
   textStyle?: any;
+  isAuto?: boolean;
+  type?: string;
 }
 
 interface StyleProps {
@@ -33,19 +35,22 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   bg = true,
   textStyle,
   onPress,
+  isAuto,
+  type,
 }) => {
   const s = styles({ bg });
   return (
     <Touchable
       {...touchableProps}
       style={[buttonStyle, s.container]}
-      width="auto"
-      height="auto"
+      width={isAuto ? "auto" : "100%"}
+      height={isAuto ? "auto" : "100%"}
       onPress={onPress}
+      isFlex={isAuto}
     >
-      <Text {...textProps} style={[s.text, textStyle]}>
+      <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
         {children}
-      </Text>
+      </TextItem>
     </Touchable>
   );
 };

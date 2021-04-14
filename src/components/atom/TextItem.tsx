@@ -37,6 +37,17 @@ const TextItem: FC<PropsWithChildren<TextItemProps & TextProps>> = ({
 
 const styles = () =>
   StyleSheet.create({
+    positiveLabel: {
+      fontFamily: ff.quicksandBold,
+      textTransform: "uppercase",
+      fontSize: ts.s,
+    },
+    negativeLabel: {
+      color: cp.purple1,
+      fontFamily: ff.quicksandBold,
+      textTransform: "uppercase",
+      fontSize: ts.s,
+    },
     unitText: {
       color: cp.purple1,
     },
