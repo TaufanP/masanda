@@ -12,11 +12,14 @@ import {
   FloatButton,
   ProductTile,
   SearchHeader,
+  DetailSheet,
+  OverlayArea,
 } from "../components";
 import {
   routesName as r,
   skeletonLayout as sl,
   spacing as sp,
+  strings as str,
 } from "../constants";
 import { MainProduct } from "../constants/types";
 import { myCallback, myMemo } from "../hooks";
@@ -28,43 +31,72 @@ interface HomeProps {
 const Home: FC<HomeProps> = ({ navigation }) => {
   const s = styles();
   const [products, setProducts] = useState<MainProduct[]>([]);
+  const [detail, setDetail] = useState<MainProduct>({
+    product_name: "",
+    image_name: "",
+    price: 0,
+    _id: "",
+    barcode: "",
+    product_image: "",
+  });
+  const [isData, setIsData] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSheet, setIsSheet] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const addPress = myCallback(() => navigation.navigate(r.EDITING));
   const bottomSheet = myCallback(() => handleSnapPress(1));
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = myMemo(["0%", "50%", "90%"]);
+  const snapPoints = myMemo(["0%", "60%", "100%"]);
   const handleSheetChange = useCallback((index) => {
-    console.log("handleSheetChange", index);
+    if (index == 0) {
+      setIsSheet(false);
+    }
   }, []);
   const handleSnapPress = useCallback((index) => {
+    setIsSheet(true);
     sheetRef.current?.snapTo(index);
   }, []);
   const handleClosePress = useCallback(() => {
+    setIsSheet(false);
     sheetRef.current?.close();
   }, []);
+  const detailSetter = (item: MainProduct) => {
+    setDetail(item);
+    bottomSheet();
+  };
+
+  const _getProductsCall = ({ data, is_success, error }: any) => {
+    if (is_success) {
+      setProducts(data);
+      setIsData(true);
+      setIsLoading(false);
+    } else {
+      setIsData(false);
+      setIsLoading(false);
+      console.log("Home, _getProducts():", error);
+    }
+    setRefreshing(false);
+  };
 
   const _getProducts = () => {
+    setIsData(false);
     return new Promise(async (resolve, reject) => {
       try {
         const {
           data: { data },
         } = await axios.get(`${api.product.getProducts}`);
-        resolve({ is_success: true });
-        setProducts(data);
-        setIsLoading(false);
+        resolve({ is_success: true, data, error: null });
       } catch (error) {
-        console.log("Home, _getProducts():", error);
-        reject({ is_success: false });
-        setIsLoading(false);
+        reject({ is_success: false, data: [], error });
       }
     });
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
-    const { is_success }: any = await _getProducts();
-    if (is_success) setRefreshing(false);
+    _getProducts()
+      .then((e) => _getProductsCall(e))
+      .catch((e) => _getProductsCall(e));
   };
 
   const refreshControl = <RefreshControl {...{ refreshing, onRefresh }} />;
@@ -72,7 +104,9 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   useEffect(() => {
     let isSubscribed = true;
     if (isSubscribed) {
-      _getProducts();
+      _getProducts()
+        .then((e) => _getProductsCall(e))
+        .catch((e) => _getProductsCall(e));
     }
     return () => {
       isSubscribed = false;
@@ -80,35 +114,57 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   }, []);
 
   return (
-    <AppCanvas>
-      <SearchHeader navigation={navigation} />
-      <SkeletonContent
-        containerStyle={{ flex: 1 }}
-        isLoading={isLoading}
-        layout={sl.home}
-      >
-        <FlatList
-          columnWrapperStyle={{ justifyContent: "space-between" }}
-          numColumns={2}
-          keyExtractor={(item) => `${item.barcode}`}
-          contentContainerStyle={{
-            paddingHorizontal: sp.xxxm,
-            paddingVertical: sp.xm,
-          }}
-          data={products}
-          renderItem={({ item }) => <ProductTile item={item} />}
-          ListEmptyComponent={<EmptyState onPress={bottomSheet} />}
-          refreshControl={refreshControl}
-          initialNumToRender={4}
-        />
-      </SkeletonContent>
-      {products.length !== 0 && (
-        <FloatButton onPress={addPress}>
-          <View style={s.float}>
-            <Plus />
-          </View>
-        </FloatButton>
-      )}
+    <>
+      <AppCanvas>
+        <SearchHeader navigation={navigation} />
+        <SkeletonContent
+          containerStyle={{ flex: 1 }}
+          isLoading={isLoading}
+          layout={sl.home}
+        >
+          <FlatList
+            extraData={isData}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            numColumns={2}
+            keyExtractor={(item) => `${item.barcode}`}
+            contentContainerStyle={{
+              paddingHorizontal: isData && products.length !== 0 ? sp.xxxm : 0,
+              paddingVertical: sp.xm,
+            }}
+            data={products}
+            renderItem={({ item }) => (
+              <ProductTile item={item} setter={detailSetter} />
+            )}
+            ListFooterComponent={
+              <>
+                {isData ? (
+                  products.length == 0 ? (
+                    <EmptyState onPress={addPress} />
+                  ) : null
+                ) : (
+                  <EmptyState
+                    onPress={onRefresh}
+                    title={str.cantLoad}
+                    subtitle={str.loadDesc}
+                    buttonText={str.refresh}
+                    withIcon={false}
+                  />
+                )}
+              </>
+            }
+            refreshControl={refreshControl}
+            initialNumToRender={4}
+          />
+        </SkeletonContent>
+        {products.length !== 0 && (
+          <FloatButton onPress={addPress}>
+            <View style={s.float}>
+              <Plus />
+            </View>
+          </FloatButton>
+        )}
+      </AppCanvas>
+      {isSheet && <OverlayArea onPress={() => handleClosePress()} />}
       <BottomSheet
         ref={sheetRef}
         index={0}
@@ -116,10 +172,10 @@ const Home: FC<HomeProps> = ({ navigation }) => {
         onChange={handleSheetChange}
       >
         <BottomSheetView style={s.contentContainer}>
-          <View style={{ flex: 1, backgroundColor: "red" }} />
+          <DetailSheet {...{ closePress: handleClosePress, detail }} />
         </BottomSheetView>
       </BottomSheet>
-    </AppCanvas>
+    </>
   );
 };
 

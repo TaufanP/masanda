@@ -11,6 +11,8 @@ interface TextItemProps {
   type?: string;
   isNumber?: boolean;
   unit?: string;
+  unitType?: string;
+  withUnit?: boolean;
 }
 
 const TextItem: FC<PropsWithChildren<TextItemProps & TextProps>> = ({
@@ -19,13 +21,17 @@ const TextItem: FC<PropsWithChildren<TextItemProps & TextProps>> = ({
   style,
   type = "default",
   unit = "Rp",
+  unitType = "none",
+  withUnit = true,
   ...props
 }) => {
   const s: { [key: string]: any } = styles();
 
   return (
     <View style={s.container}>
-      {isNumber && <Text style={s.unitText}>{unit} </Text>}
+      {isNumber && withUnit && (
+        <Text style={[s.unitText, s[unitType]]}>{unit} </Text>
+      )}
       <Text {...props} style={[s.default, style, s[type]]}>
         {isNumber && children
           ? `${children.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}`
@@ -37,6 +43,20 @@ const TextItem: FC<PropsWithChildren<TextItemProps & TextProps>> = ({
 
 const styles = () =>
   StyleSheet.create({
+    // UNIT
+    detail80: { top: -16, left: -8 },
+    // TEXT
+    bold80: {
+      fontSize: 80,
+      // color: cp.text1,
+      color: cp.purple1,
+      fontFamily: ff.quicksandBold,
+    },
+    bold24: {
+      fontSize: ts.xxm,
+      color: cp.text1,
+      fontFamily: ff.quicksandBold,
+    },
     positiveLabel: {
       fontFamily: ff.quicksandBold,
       textTransform: "uppercase",

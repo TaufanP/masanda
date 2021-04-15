@@ -5,6 +5,7 @@ import TextItem from "./TextItem";
 import Gap from "./Gap";
 import ImgPreview from "./ImgPreview";
 import FormContainer from "./FormContainer";
+import OverlayArea from "./OverlayArea";
 
 export {
   AppCanvas,
@@ -14,4 +15,5 @@ export {
   Gap,
   ImgPreview,
   FormContainer,
+  OverlayArea,
 };

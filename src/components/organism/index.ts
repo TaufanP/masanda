@@ -1,4 +1,5 @@
+import DetailSheet from "./DetailSheet";
 import SearchHeader from "./SearchHeader";
 import StaticBottomSheet from "./StaticBottomSheet";
 
-export { SearchHeader, StaticBottomSheet };
+export { DetailSheet, SearchHeader, StaticBottomSheet };

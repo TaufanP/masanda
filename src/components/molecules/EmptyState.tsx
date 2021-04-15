@@ -15,21 +15,38 @@ interface EmptyStateProps {
   buttonStyle?: Object;
   size?: number;
   onPress: () => void;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  addIcon?: any;
+  withIcon?: boolean;
 }
 
-const EmptyState: FC<PropsWithChildren<EmptyStateProps>> = ({ onPress }) => {
+const EmptyState: FC<PropsWithChildren<EmptyStateProps>> = ({
+  onPress,
+  subtitle = str.addingNow,
+  title = str.notAddingYet,
+  buttonText = str.adding,
+  addIcon = <Plus />,
+  withIcon = true,
+}) => {
   const s = styles();
   return (
     <View style={s.container}>
       <EmptyIcon width={168} height={168} />
-      <TextItem type="semiHeaderC">{str.notAddingYet}</TextItem>
-      <TextItem type="defaultC">{str.addingNow}</TextItem>
+      <TextItem type="semiHeaderC">{title}</TextItem>
+      <TextItem type="defaultC">{subtitle}</TextItem>
       <Gap vertical={sp.xxxm} />
       <Touchable vertical={sp.s} horizontal={sp.xxxm} onPress={onPress}>
         <View style={s.rowCont}>
-          <TextItem type="defaultW">{str.adding}</TextItem>
-          <Gap horizontal={sp.s} />
-          <Plus />
+          <TextItem type="defaultW">{buttonText}</TextItem>
+
+          {withIcon && (
+            <>
+              <Gap horizontal={sp.s} />
+              addIcon
+            </>
+          )}
         </View>
       </Touchable>
     </View>
@@ -43,7 +60,7 @@ const styles = () =>
       alignItems: "center",
       width,
       height: height / 1.5,
-      paddingHorizontal: 24,
+      paddingHorizontal: width * 0.2,
     },
     rowCont: {
       flexDirection: "row",

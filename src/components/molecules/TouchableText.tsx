@@ -23,6 +23,9 @@ interface TouchableTextProps {
   type?: string;
   isLoading?: boolean;
   loadingColor?: string;
+  width?: number | string;
+  height?: number | string;
+  rippleColor?: string;
 }
 
 interface StyleProps {
@@ -41,18 +44,22 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   type,
   isLoading,
   loadingColor,
+  width = null,
+  height = null,
+  rippleColor,
 }) => {
   const s = styles({ bg });
   return (
     <Touchable
       {...touchableProps}
       style={[buttonStyle, s.container]}
-      width={isAuto ? "auto" : "100%"}
-      height={isAuto ? "auto" : "100%"}
+      width={isAuto ? "auto" : width || "100%"}
+      height={isAuto ? "auto" : height || "100%"}
       onPress={onPress}
       isFlex={isAuto}
       isLoading={isLoading}
       loadingColor={loadingColor}
+      rippleColor={rippleColor}
     >
       <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
         {children}

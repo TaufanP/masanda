@@ -1,6 +1,7 @@
 const colorsPalette = {
   purple1: "#870079",
   purple2: "#AF009E",
+  purple3: "#EE90E5",
   red1: "#F34141",
   text1: "#3E3E3E",
   text2: "#8C8C8C",

@@ -25,6 +25,7 @@ interface TouchableProps {
   hitslop?: HitSlopProps;
   isLoading?: boolean;
   loadingColor?: string;
+  rippleColor?: string;
 }
 
 interface StyleProps {
@@ -52,6 +53,7 @@ const Touchable: FC<
   hitslop,
   isLoading,
   loadingColor = "#FFF",
+  rippleColor = "#fff9",
   ...props
 }) => {
   const s = styles({
@@ -67,7 +69,7 @@ const Touchable: FC<
       <TouchableNativeFeedback
         {...props}
         onPress={onPress}
-        background={TouchableNativeFeedback.Ripple("#fff9", true)}
+        background={TouchableNativeFeedback.Ripple(rippleColor, true)}
         hitSlop={hitslop}
       >
         <View style={[s.container, style]}>

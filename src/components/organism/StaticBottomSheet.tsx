@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, ReactNode, FC } from "react";
 import {
   Alert,
   Dimensions,
@@ -21,7 +21,22 @@ import { TouchableText } from "../molecules";
 const { width, height } = Dimensions.get("screen");
 const { alert } = Alert;
 
-const StaticBottomSheet = ({
+interface StaticBottomSheetProps {
+  onPressLeft?: any;
+  onPressRight?: any;
+  onPress?: any;
+  visible: boolean;
+  action?: boolean;
+  leftLabel?: string;
+  rightLabel?: string;
+  mainLabel?: string;
+  mainTitle?: string;
+  subTitle?: string;
+  setVisible?: Function;
+  mainIcon?: ReactNode;
+}
+
+const StaticBottomSheet: FC<StaticBottomSheetProps> = ({
   onPressLeft = () => alert("tets"),
   onPressRight = () => alert("tets"),
   onPress = () => alert("tets"),
