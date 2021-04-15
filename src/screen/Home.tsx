@@ -1,7 +1,8 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import axios from "axios";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, useRef, useCallback } from "react";
 import { FlatList, StyleSheet, View, RefreshControl } from "react-native";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import { Plus } from "../../assets";
 import api from "../api";
@@ -18,7 +19,7 @@ import {
   spacing as sp,
 } from "../constants";
 import { MainProduct } from "../constants/types";
-import { myCallback } from "../hooks";
+import { myCallback, myMemo } from "../hooks";
 
 interface HomeProps {
   navigation: CompositeNavigationProp<any, any>;
@@ -30,6 +31,18 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const addPress = myCallback(() => navigation.navigate(r.EDITING));
+  const bottomSheet = myCallback(() => handleSnapPress(1));
+  const sheetRef = useRef<BottomSheet>(null);
+  const snapPoints = myMemo(["0%", "50%", "90%"]);
+  const handleSheetChange = useCallback((index) => {
+    console.log("handleSheetChange", index);
+  }, []);
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapTo(index);
+  }, []);
+  const handleClosePress = useCallback(() => {
+    sheetRef.current?.close();
+  }, []);
 
   const _getProducts = () => {
     return new Promise(async (resolve, reject) => {
@@ -84,7 +97,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
           }}
           data={products}
           renderItem={({ item }) => <ProductTile item={item} />}
-          ListEmptyComponent={<EmptyState onPress={addPress} />}
+          ListEmptyComponent={<EmptyState onPress={bottomSheet} />}
           refreshControl={refreshControl}
           initialNumToRender={4}
         />
@@ -96,12 +109,25 @@ const Home: FC<HomeProps> = ({ navigation }) => {
           </View>
         </FloatButton>
       )}
+      <BottomSheet
+        ref={sheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        onChange={handleSheetChange}
+      >
+        <BottomSheetView style={s.contentContainer}>
+          <View style={{ flex: 1, backgroundColor: "red" }} />
+        </BottomSheetView>
+      </BottomSheet>
     </AppCanvas>
   );
 };
 
 const styles = () =>
   StyleSheet.create({
+    contentContainer: {
+      backgroundColor: "white",
+    },
     float: {
       width: 56,
       height: 56,

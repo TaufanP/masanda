@@ -17,8 +17,8 @@ import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;
 
-import com.facebook.react.bridge.JSIModulePackage;
-import com.swmansion.reanimated.ReanimatedJSIModulePackage;
+// import com.facebook.react.bridge.JSIModulePackage;
+// import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
@@ -50,10 +50,10 @@ public class MainApplication extends Application implements ReactApplication {
           return "index";
         }
 
-        @Override
-        protected JSIModulePackage getJSIModulePackage() {
-          return new ReanimatedJSIModulePackage();
-        }
+        // @Override
+        // protected JSIModulePackage getJSIModulePackage() {
+        //   return new ReanimatedJSIModulePackage();
+        // }
       };
 
   @Override
