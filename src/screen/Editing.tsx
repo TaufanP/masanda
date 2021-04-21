@@ -1,6 +1,8 @@
-import { CompositeNavigationProp } from "@react-navigation/core";
+import { CompositeNavigationProp, useRoute } from "@react-navigation/core";
+import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
-import React, { FC, useState, useRef } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
+import StackParamsList from "../constants/screen-params";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import {
   AppCanvas,
@@ -16,6 +18,7 @@ import {
   strings as str,
   textSize as ts,
   fontFamily as ff,
+  colorsPalette as cp,
 } from "../constants";
 import api from "../api";
 interface EditingProps {
@@ -27,6 +30,8 @@ interface DataFormProps {
 }
 
 const Editing: FC<EditingProps> = () => {
+  const route = useRoute<RouteProp<StackParamsList, "EDITING">>();
+  const { detail, isEditing } = route.params;
   const [visible, setVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [imgFile, setImgFile] = useState<any>({ uri: "" });
@@ -74,6 +79,21 @@ const Editing: FC<EditingProps> = () => {
     }
   };
 
+  const _checkingParams = () => {
+    if (detail) {
+      setDataForm({
+        barcode: detail.barcode,
+        product_name: detail.product_name,
+        price: detail.price,
+      });
+      setImgFile({ uri: detail.product_image });
+    }
+  };
+
+  useEffect(() => {
+    _checkingParams();
+  }, []);
+
   return (
     <AppCanvas>
       <ImgField onPress={() => setVisible(true)} uri={imgFile.uri} />
@@ -108,6 +128,18 @@ const Editing: FC<EditingProps> = () => {
         >
           {str.save}
         </TouchableText>
+        <Gap vertical={sp.xxxm} />
+        {isEditing && (
+          <TouchableText
+            buttonStyle={{ height: 50 }}
+            type="positiveLabel"
+            onPress={() => _addProduct()}
+            isLoading={isLoading}
+            backgroundColor={cp.red1}
+          >
+            {str.delete}
+          </TouchableText>
+        )}
       </FormContainer>
       <StaticBottomSheet
         {...{

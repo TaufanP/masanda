@@ -14,12 +14,14 @@ const { width, height } = Dimensions.get("screen");
 const { alert } = Alert;
 
 interface DetailSheetProps {
-  closePress: any;
+  onPressRight?: any;
+  onPressLeft?: any;
   detail: MainProduct;
 }
 
 const DetailSheet: FC<DetailSheetProps> = ({
-  closePress,
+  onPressLeft = () => console.log("test"),
+  onPressRight = () => console.log("test"),
   detail: { product_image, price, product_name },
 }) => {
   const s = styles();
@@ -48,7 +50,7 @@ const DetailSheet: FC<DetailSheetProps> = ({
         <View style={s.buttonsCont}>
           <View style={[s.buttonCont, s.leftButton]}>
             <TouchableText
-              //   onPress={onPressLeft}
+              onPress={onPressLeft}
               isAuto={false}
               type="negativeLabel"
               bg={false}
@@ -61,7 +63,7 @@ const DetailSheet: FC<DetailSheetProps> = ({
           </View>
           <View style={[s.buttonCont, s.rightButton]}>
             <TouchableText
-              onPress={() => closePress()}
+              onPress={onPressRight}
               height="100%"
               isAuto={false}
               type="positiveLabel"

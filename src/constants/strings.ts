@@ -1,6 +1,7 @@
 const strings = {
   findGoods: "Cari barang",
   adding: "TAMBAH",
+  delete: "HAPUS",
   notAddingYet: "Anda belum menambahkan produk.",
   addingNow: "Tambah produk sekarang.",
   addImg: "Tambah gambar produk",

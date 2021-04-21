@@ -64,6 +64,7 @@ const Touchable: FC<
     isFlex,
     backgroundColor,
   });
+
   return (
     <View style={s.parent}>
       <TouchableNativeFeedback

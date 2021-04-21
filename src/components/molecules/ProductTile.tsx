@@ -28,15 +28,13 @@ interface ProductTileProps {
   setter: any;
 }
 
-const ProductTile: FC<ProductTileProps> = ({
-  item: { product_image, price, product_name },
-  setter,
-}) => {
+const ProductTile: FC<ProductTileProps> = ({ item, setter }) => {
+  const { product_image, price, product_name } = item;
   const s = styles();
   return (
     <TouchableOpacity
       style={s.container}
-      onPress={() => setter({ product_image, price, product_name })}
+      onPress={() => setter(item)}
       activeOpacity={0.6}
     >
       <View style={s.image}>

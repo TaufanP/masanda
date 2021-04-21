@@ -40,7 +40,7 @@ const SearchHeader: FC<SearchHeader> = ({ navigation }) => {
           <Scan width={24} height={24} fill={"#FFF"} />
         </Touchable>
       </View>
-      <View style={s.section}>
+      {/* <View style={s.section}>
         <TouchableText
           onPress={() => console.log("hasilnamna")}
           buttonStyle={{ marginRight: sp.xm }}
@@ -51,7 +51,7 @@ const SearchHeader: FC<SearchHeader> = ({ navigation }) => {
         <TouchableText onPress={() => console.log("hasilnamna")} bg={false}>
           Harga <DArrow />
         </TouchableText>
-      </View>
+      </View> */}
     </View>
   );
 };

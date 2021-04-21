@@ -65,7 +65,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     bottomSheet();
   };
 
-  const _getProductsCall = ({ data, is_success, error }: any) => {
+  const _getProductsCall = ({ data = [], is_success, error }: any) => {
     if (is_success) {
       setProducts(data);
       setIsData(true);
@@ -79,6 +79,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   };
 
   const _getProducts = () => {
+    setIsLoading(true);
     setIsData(false);
     return new Promise(async (resolve, reject) => {
       try {
@@ -122,39 +123,33 @@ const Home: FC<HomeProps> = ({ navigation }) => {
           isLoading={isLoading}
           layout={sl.home}
         >
-          <FlatList
-            extraData={isData}
-            columnWrapperStyle={{ justifyContent: "space-between" }}
-            numColumns={2}
-            keyExtractor={(item) => `${item.barcode}`}
-            contentContainerStyle={{
-              paddingHorizontal: isData && products.length !== 0 ? sp.xxxm : 0,
-              paddingVertical: sp.xm,
-            }}
-            data={products}
-            renderItem={({ item }) => (
-              <ProductTile item={item} setter={detailSetter} />
-            )}
-            ListFooterComponent={
-              <>
-                {isData ? (
-                  products.length == 0 ? (
-                    <EmptyState onPress={addPress} />
-                  ) : null
-                ) : (
-                  <EmptyState
-                    onPress={onRefresh}
-                    title={str.cantLoad}
-                    subtitle={str.loadDesc}
-                    buttonText={str.refresh}
-                    withIcon={false}
-                  />
-                )}
-              </>
-            }
-            refreshControl={refreshControl}
-            initialNumToRender={4}
-          />
+          {isData ? (
+            <FlatList
+              extraData={isData}
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              numColumns={2}
+              keyExtractor={(item) => `${item.barcode}`}
+              contentContainerStyle={{
+                paddingVertical: sp.xm,
+                paddingHorizontal: sp.xxxm,
+              }}
+              data={products}
+              renderItem={({ item }) => (
+                <ProductTile item={item} setter={detailSetter} />
+              )}
+              ListEmptyComponent={<EmptyState onPress={addPress} />}
+              refreshControl={refreshControl}
+              initialNumToRender={4}
+            />
+          ) : (
+            <EmptyState
+              onPress={onRefresh}
+              title={str.cantLoad}
+              subtitle={str.loadDesc}
+              buttonText={str.refresh}
+              withIcon={false}
+            />
+          )}
         </SkeletonContent>
         {products.length !== 0 && (
           <FloatButton onPress={addPress}>
@@ -172,7 +167,14 @@ const Home: FC<HomeProps> = ({ navigation }) => {
         onChange={handleSheetChange}
       >
         <BottomSheetView style={s.contentContainer}>
-          <DetailSheet {...{ closePress: handleClosePress, detail }} />
+          <DetailSheet
+            {...{
+              onPressRight: () => handleClosePress(),
+              detail,
+              onPressLeft: () =>
+                navigation.navigate(r.EDITING, { detail, isEditing: true }),
+            }}
+          />
         </BottomSheetView>
       </BottomSheet>
     </>

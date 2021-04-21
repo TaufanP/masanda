@@ -44,7 +44,7 @@ const EmptyState: FC<PropsWithChildren<EmptyStateProps>> = ({
           {withIcon && (
             <>
               <Gap horizontal={sp.s} />
-              addIcon
+              {addIcon}
             </>
           )}
         </View>
@@ -60,7 +60,7 @@ const styles = () =>
       alignItems: "center",
       width,
       height: height / 1.5,
-      paddingHorizontal: width * 0.2,
+      paddingHorizontal: width * 0.1,
     },
     rowCont: {
       flexDirection: "row",
