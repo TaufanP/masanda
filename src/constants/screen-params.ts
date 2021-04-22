@@ -2,8 +2,8 @@ import { MainProduct } from "./types";
 
 type StackParamsList = {
   EDITING: {
-    detail: MainProduct;
-    isEditing: boolean;
+    detail: MainProduct | undefined;
+    isEditing: boolean | undefined;
   };
 };
 

@@ -8,6 +8,7 @@ const strings = {
   save: "SIMPAN",
   edit: "EDIT",
   ok: "OK",
+  cancel: "BATAL",
   refresh: "Muat Ulang",
   cantLoad: "Tidak dapat memuat data.",
   loadDesc: "Kami sedang memperbaiki masalah ini, silahkan coba lagi nanti.",

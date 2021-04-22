@@ -31,7 +31,8 @@ interface DataFormProps {
 
 const Editing: FC<EditingProps> = () => {
   const route = useRoute<RouteProp<StackParamsList, "EDITING">>();
-  const { detail, isEditing } = route.params;
+  const detail = route?.params?.detail;
+  const isEditing = route?.params?.isEditing;
   const [visible, setVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [imgFile, setImgFile] = useState<any>({ uri: "" });
@@ -40,6 +41,7 @@ const Editing: FC<EditingProps> = () => {
     product_name: "",
     price: "",
   });
+  const [staticType, setStaticType] = useState<string>("");
 
   const _setter = (e: string, type: string) => {
     setDataForm((currValue) => {
@@ -90,13 +92,68 @@ const Editing: FC<EditingProps> = () => {
     }
   };
 
+  const _onPressCamera = () =>
+    launchCamera(
+      {
+        mediaType: "photo",
+      },
+      (response) => {
+        setVisible(false);
+        setImgFile({
+          name: response.fileName,
+          type: response.type,
+          uri: response.uri,
+        });
+      }
+    );
+
+  const _onPressLibrary = () =>
+    launchImageLibrary(
+      {
+        mediaType: "photo",
+      },
+      (response) => {
+        setVisible(false);
+        setImgFile({
+          name: response.fileName,
+          type: response.type,
+          uri: response.uri,
+        });
+      }
+    );
+
+  const staticSwitch: any = {
+    ImagePicker: {
+      leftLabel: "Kamera",
+      mainTitle: "Ambil Foto Produk",
+      rightLabel: "Galeri",
+      subTitle: "Ambil foto dari kamera maupun galeri.",
+      onPressLeft: _onPressCamera,
+      onPressRight: _onPressLibrary,
+    },
+    deleting: {
+      leftLabel: str.cancel,
+      mainTitle: `Menghapus produk`,
+      rightLabel: str.delete,
+      subTitle: `Apakah anda yakin ingin menghapus ${detail?.product_name}?`,
+      onPressLeft: () => setVisible(false),
+      onPressRight: _onPressLibrary,
+    },
+  };
+
   useEffect(() => {
     _checkingParams();
   }, []);
 
   return (
     <AppCanvas>
-      <ImgField onPress={() => setVisible(true)} uri={imgFile.uri} />
+      <ImgField
+        onPress={() => {
+          setVisible(true);
+          setStaticType("ImagePicker");
+        }}
+        uri={imgFile.uri}
+      />
       <FormContainer vertical={48}>
         <TextField
           placeholder={"Barcode Barang (Opsional)"}
@@ -133,7 +190,10 @@ const Editing: FC<EditingProps> = () => {
           <TouchableText
             buttonStyle={{ height: 50 }}
             type="positiveLabel"
-            onPress={() => _addProduct()}
+            onPress={() => {
+              setVisible(true);
+              setStaticType("deleting");
+            }}
             isLoading={isLoading}
             backgroundColor={cp.red1}
           >
@@ -145,38 +205,7 @@ const Editing: FC<EditingProps> = () => {
         {...{
           setVisible,
           visible,
-          leftLabel: "Kamera",
-          mainTitle: "Ambil Foto Produk",
-          rightLabel: "Galeri",
-          subTitle: "Ambil foto dari kamera maupun galeri.",
-          onPressLeft: () =>
-            launchCamera(
-              {
-                mediaType: "photo",
-              },
-              (response) => {
-                setVisible(false);
-                setImgFile({
-                  name: response.fileName,
-                  type: response.type,
-                  uri: response.uri,
-                });
-              }
-            ),
-          onPressRight: () =>
-            launchImageLibrary(
-              {
-                mediaType: "photo",
-              },
-              (response) => {
-                setVisible(false);
-                setImgFile({
-                  name: response.fileName,
-                  type: response.type,
-                  uri: response.uri,
-                });
-              }
-            ),
+          ...staticSwitch[staticType],
         }}
       />
     </AppCanvas>
