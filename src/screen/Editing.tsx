@@ -1,7 +1,7 @@
 import { CompositeNavigationProp, useRoute } from "@react-navigation/core";
 import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
-import React, { FC, useState, useRef, useEffect } from "react";
+import React, { FC, useState, ReactNode, useEffect } from "react";
 import StackParamsList from "../constants/screen-params";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import {
@@ -28,6 +28,22 @@ interface EditingProps {
 interface DataFormProps {
   [key: string]: string | number;
 }
+interface StaticBottomSheetProps {
+  onPressLeft?: any;
+  onPressRight?: any;
+  onPress?: any;
+  action?: boolean;
+  leftLabel?: string;
+  rightLabel?: string;
+  mainLabel?: string;
+  mainTitle?: string;
+  subTitle?: string;
+  mainIcon?: ReactNode;
+}
+
+interface StaticTypeProps {
+  [key: string]: StaticBottomSheetProps;
+}
 
 const Editing: FC<EditingProps> = () => {
   const route = useRoute<RouteProp<StackParamsList, "EDITING">>();
@@ -35,6 +51,7 @@ const Editing: FC<EditingProps> = () => {
   const isEditing = route?.params?.isEditing;
   const [visible, setVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteLoading, setisDeleteLoading] = useState<boolean>(false);
   const [imgFile, setImgFile] = useState<any>({ uri: "" });
   const [dataForm, setDataForm] = useState<DataFormProps>({
     barcode: "",
@@ -81,6 +98,65 @@ const Editing: FC<EditingProps> = () => {
     }
   };
 
+  const _deleteProduct = async () => {
+    setisDeleteLoading(true);
+    const dataSend = {
+      barcode: detail?.barcode,
+    };
+    try {
+      const {
+        data: { data, isSuccess },
+      } = await axios.post(`${api.product.deleteProduct}`, dataSend);
+      setisDeleteLoading(false);
+      if (isSuccess) {
+        setDataForm({
+          barcode: "",
+          product_name: "",
+          price: "",
+        });
+        setImgFile({ uri: "" });
+      }
+    } catch (error) {
+      console.log("Editing, _deleteProduct(), ", error);
+      setisDeleteLoading(false);
+    }
+  };
+
+  const _updateProduct = async () => {
+    setIsLoading(true);
+    const dataSend = new FormData();
+    const { barcode, product_name, price } = dataForm;
+    dataSend.append("product_name", product_name);
+    dataSend.append("price", price);
+    dataSend.append("barcode", barcode);
+    dataSend.append("product_image", imgFile);
+    try {
+      const {
+        data: { data },
+      } = await axios.post(`${api.product.updateProduct}`, dataSend, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+      console.log(data);
+      setDataForm({
+        barcode: "",
+        product_name: "",
+        price: "",
+      });
+      setImgFile({ uri: "" });
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Editing, _addProduct(),", error);
+      setIsLoading(false);
+    }
+  };
+
+  const _onPressDelete = () => {
+    setVisible(false);
+    _deleteProduct();
+  };
+
   const _checkingParams = () => {
     if (detail) {
       setDataForm({
@@ -98,6 +174,7 @@ const Editing: FC<EditingProps> = () => {
         mediaType: "photo",
       },
       (response) => {
+        console.log(response);
         setVisible(false);
         setImgFile({
           name: response.fileName,
@@ -122,7 +199,7 @@ const Editing: FC<EditingProps> = () => {
       }
     );
 
-  const staticSwitch: any = {
+  const staticSwitch: StaticTypeProps = {
     ImagePicker: {
       leftLabel: "Kamera",
       mainTitle: "Ambil Foto Produk",
@@ -137,7 +214,7 @@ const Editing: FC<EditingProps> = () => {
       rightLabel: str.delete,
       subTitle: `Apakah anda yakin ingin menghapus ${detail?.product_name}?`,
       onPressLeft: () => setVisible(false),
-      onPressRight: _onPressLibrary,
+      onPressRight: () => _onPressDelete(),
     },
   };
 
@@ -194,7 +271,7 @@ const Editing: FC<EditingProps> = () => {
               setVisible(true);
               setStaticType("deleting");
             }}
-            isLoading={isLoading}
+            isLoading={isDeleteLoading}
             backgroundColor={cp.red1}
           >
             {str.delete}
