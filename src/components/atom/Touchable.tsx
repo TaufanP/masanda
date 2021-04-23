@@ -72,6 +72,7 @@ const Touchable: FC<
         onPress={onPress}
         background={TouchableNativeFeedback.Ripple(rippleColor, true)}
         hitSlop={hitslop}
+        disabled={isLoading}
       >
         <View style={[s.container, style]}>
           {isLoading ? <ActivityIndicator color={loadingColor} /> : children}

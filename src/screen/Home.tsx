@@ -171,8 +171,10 @@ const Home: FC<HomeProps> = ({ navigation }) => {
             {...{
               onPressRight: () => handleClosePress(),
               detail,
-              onPressLeft: () =>
-                navigation.navigate(r.EDITING, { detail, isEditing: true }),
+              onPressLeft: () => {
+                handleClosePress();
+                navigation.navigate(r.EDITING, { detail, isEditing: true });
+              },
             }}
           />
         </BottomSheetView>

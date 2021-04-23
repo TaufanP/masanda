@@ -84,7 +84,6 @@ const Editing: FC<EditingProps> = () => {
           "content-type": "multipart/form-data",
         },
       });
-      console.log(data);
       setDataForm({
         barcode: "",
         product_name: "",
@@ -124,12 +123,14 @@ const Editing: FC<EditingProps> = () => {
 
   const _updateProduct = async () => {
     setIsLoading(true);
+    const { barcode, product_name, price, id } = dataForm;
     const dataSend = new FormData();
-    const { barcode, product_name, price } = dataForm;
+    dataSend.append("id", id);
+    dataSend.append("barcode", barcode);
     dataSend.append("product_name", product_name);
     dataSend.append("price", price);
-    dataSend.append("barcode", barcode);
-    dataSend.append("product_image", imgFile);
+    if (imgFile.hasOwnProperty("type"))
+      dataSend.append("product_image", imgFile);
     try {
       const {
         data: { data },
@@ -138,7 +139,6 @@ const Editing: FC<EditingProps> = () => {
           "content-type": "multipart/form-data",
         },
       });
-      console.log(data);
       setDataForm({
         barcode: "",
         product_name: "",
@@ -147,7 +147,7 @@ const Editing: FC<EditingProps> = () => {
       setImgFile({ uri: "" });
       setIsLoading(false);
     } catch (error) {
-      console.log("Editing, _addProduct(),", error);
+      console.log("Editing, _updateProduct(),", error);
       setIsLoading(false);
     }
   };
@@ -163,6 +163,7 @@ const Editing: FC<EditingProps> = () => {
         barcode: detail.barcode,
         product_name: detail.product_name,
         price: detail.price,
+        id: detail._id,
       });
       setImgFile({ uri: detail.product_image });
     }
@@ -174,7 +175,6 @@ const Editing: FC<EditingProps> = () => {
         mediaType: "photo",
       },
       (response) => {
-        console.log(response);
         setVisible(false);
         setImgFile({
           name: response.fileName,
@@ -218,6 +218,10 @@ const Editing: FC<EditingProps> = () => {
     },
   };
 
+  const _editing = () => {
+    isEditing ? _updateProduct() : _addProduct();
+  };
+
   useEffect(() => {
     _checkingParams();
   }, []);
@@ -257,7 +261,7 @@ const Editing: FC<EditingProps> = () => {
         <TouchableText
           buttonStyle={{ height: 50 }}
           type="positiveLabel"
-          onPress={() => _addProduct()}
+          onPress={() => _editing()}
           isLoading={isLoading}
         >
           {str.save}
