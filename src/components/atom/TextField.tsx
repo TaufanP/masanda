@@ -1,10 +1,17 @@
 import React, { FC, useState, memo } from "react";
-import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import {
   colorsPalette as cp,
   fontFamily as ff,
   spacing as sp,
 } from "../../constants";
+import { Scan } from "../../../assets";
 
 interface TextFieldProps {
   isError?: boolean;
@@ -14,6 +21,8 @@ interface TextFieldProps {
   useGap?: boolean;
   optKey?: string;
   ref?: any;
+  isExtra?: boolean;
+  extraAction?: any;
 }
 
 const TextField: FC<TextFieldProps & TextInputProps> = ({
@@ -25,6 +34,8 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
   useGap = true,
   optKey = "none",
   ref,
+  isExtra = false,
+  extraAction = () => console.log("extraAction"),
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(secureTextEntry);
@@ -33,7 +44,11 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
       style={[
         isError ? styles.formErr : styles.form,
         style,
-        { flex: isRow ? 1 : 0, marginBottom: useGap ? sp.xxxm : 0 },
+        {
+          flex: isRow ? 1 : 0,
+          marginBottom: useGap ? sp.xxxm : 0,
+          paddingRight: isExtra ? 0 : sp.xxxm,
+        },
       ]}
     >
       <TextInput
@@ -44,6 +59,11 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
         placeholderTextColor={cp.text2}
         ref={ref}
       />
+      {isExtra && (
+        <TouchableOpacity style={styles.extraAction} onPress={extraAction}>
+          <Scan width={24} height={24} fill={cp.purple2} />
+        </TouchableOpacity>
+      )}
       {/* {secureTextEntry && (
         <IconEye
           fill={isVisible ? colors.gray1 : colors.blue1}
@@ -60,7 +80,7 @@ const globalStyle = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: cp.white1,
     borderRadius: 8,
-    paddingHorizontal: sp.xxxm,
+    paddingLeft: sp.xxxm,
     flexDirection: "row",
     height: 40,
   },
@@ -74,6 +94,11 @@ const globalStyle = StyleSheet.create({
 
 const styles = StyleSheet.create({
   // here
+  extraAction: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: sp.xxxm,
+  },
   form: { ...globalStyle.formStyle, borderColor: cp.white1 },
   formErr: { ...globalStyle.formStyle, borderColor: cp.red1 },
   textInput: { ...globalStyle.textInputStyle, color: cp.text1 },

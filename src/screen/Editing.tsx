@@ -1,32 +1,36 @@
 import { CompositeNavigationProp, useRoute } from "@react-navigation/core";
 import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
-import React, { FC, useState, ReactNode, useEffect } from "react";
-import StackParamsList from "../constants/screen-params";
+import React, { FC, ReactNode, useEffect, useState } from "react";
+import { View, Dimensions, StyleSheet } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import {
-  AppCanvas,
-  ImgField,
-  TextField,
-  Gap,
-  FormContainer,
-  TouchableText,
-  StaticBottomSheet,
-} from "../components";
-import {
-  spacing as sp,
-  strings as str,
-  textSize as ts,
-  fontFamily as ff,
-  colorsPalette as cp,
-  fancyState as fan,
-} from "../constants";
 import api from "../api";
 import mockApi from "../api/mockApi";
+import {
+  AppCanvas,
+  FormContainer,
+  Gap,
+  ImgField,
+  ScannerComp,
+  StaticBottomSheet,
+  TextField,
+  TouchableText,
+} from "../components";
+import {
+  colorsPalette as cp,
+  fancyState as fan,
+  spacing as sp,
+  strings as str,
+} from "../constants";
 import { FancyTypes } from "../constants/fancy-states";
+import StackParamsList from "../constants/screen-params";
+
+const { width, height } = Dimensions.get("screen");
 interface EditingProps {
   navigation?: CompositeNavigationProp<any, any>;
 }
+
+interface StyleProps {}
 interface DataFormProps {
   [key: string]: string | number;
 }
@@ -55,6 +59,7 @@ const Editing: FC<EditingProps> = () => {
   const [isEditing, setIsEditing] = useState<boolean>(
     route?.params?.isEditing || false
   );
+  const [isScanning, setIsScanning] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDeleteLoading, setisDeleteLoading] = useState<boolean>(false);
@@ -65,6 +70,13 @@ const Editing: FC<EditingProps> = () => {
     price: "",
   });
   const [staticType, setStaticType] = useState<string>("");
+  const s = styles();
+
+  const processScanned = ({ data }: any) => {
+    setDataForm((current) => {
+      return { ...current, barcode: data };
+    });
+  };
 
   const _setter = (e: string, type: string) => {
     setDataForm((currValue) => {
@@ -279,6 +291,8 @@ const Editing: FC<EditingProps> = () => {
           optKey="barcode"
           maxLength={15}
           defaultValue={dataForm.barcode.toString()}
+          isExtra={true}
+          extraAction={() => setIsScanning(true)}
         />
         <TextField
           placeholder={"Nama Barang"}
@@ -319,6 +333,16 @@ const Editing: FC<EditingProps> = () => {
           </TouchableText>
         )}
       </FormContainer>
+      {isScanning && (
+        <View style={s.scannerCont}>
+          <ScannerComp
+            result={(e: any) => {
+              processScanned(e);
+              setIsScanning(false);
+            }}
+          />
+        </View>
+      )}
       <StaticBottomSheet
         {...{
           setVisible,
@@ -329,5 +353,14 @@ const Editing: FC<EditingProps> = () => {
     </AppCanvas>
   );
 };
+
+const styles = () =>
+  StyleSheet.create({
+    scannerCont: {
+      position: "absolute",
+      width,
+      height,
+    },
+  });
 
 export default Editing;
