@@ -7,8 +7,8 @@ import FancyBar from "./FancyBar";
 
 interface AppCanvas {
   navigation?: CompositeNavigationProp<any, any>;
-  fancyBarState: FancyTypes;
-  setFancyBarState: any;
+  fancyBarState?: FancyTypes;
+  setFancyBarState?: any;
 }
 
 const AppCanvas: FC<PropsWithChildren<AppCanvas>> = ({

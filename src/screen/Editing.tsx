@@ -27,7 +27,6 @@ import { FancyTypes } from "../constants/fancy-states";
 interface EditingProps {
   navigation?: CompositeNavigationProp<any, any>;
 }
-
 interface DataFormProps {
   [key: string]: string | number;
 }

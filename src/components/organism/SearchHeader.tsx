@@ -11,12 +11,14 @@ import {
 import { TextField, Touchable } from "../atom/";
 import { TouchableText } from "../molecules";
 import { routesName as r } from "../../constants";
+import { MainProduct } from "../../constants/types";
 
 interface SearchHeader {
   navigation: CompositeNavigationProp<any, any>;
+  products: MainProduct[];
 }
 
-const SearchHeader: FC<SearchHeader> = ({ navigation }) => {
+const SearchHeader: FC<SearchHeader> = ({ navigation, products }) => {
   const s = styles();
   const styleInput = myMemo({ marginRight: sp.s });
   // const namePress = myCallback(() => console.log("hasilnamna"));
@@ -35,7 +37,7 @@ const SearchHeader: FC<SearchHeader> = ({ navigation }) => {
           width={40}
           height={40}
           isFlex={false}
-          onPress={() => navigation.navigate(r.SCANNER)}
+          onPress={() => navigation.navigate(r.SCANNER, { products })}
         >
           <Scan width={24} height={24} fill={"#FFF"} />
         </Touchable>

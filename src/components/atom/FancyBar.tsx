@@ -16,8 +16,8 @@ const fancyButtonFormula = width * 0.18;
 const fancyButtonWidth = fancyButtonFormula < 50 ? 50 : fancyButtonFormula;
 
 interface FancyBarProps {
-  fancyBarState: FancyTypes;
-  setFancyBarState: any;
+  fancyBarState?: FancyTypes;
+  setFancyBarState?: any;
 }
 
 interface StyleProps {

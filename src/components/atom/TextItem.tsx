@@ -57,6 +57,11 @@ const styles = () =>
       color: cp.text1,
       fontFamily: ff.quicksandBold,
     },
+    bold24White: {
+      fontSize: ts.xxm,
+      color: cp.white,
+      fontFamily: ff.quicksandBold,
+    },
     bold14: {
       fontSize: ts.xs,
       color: cp.white0,

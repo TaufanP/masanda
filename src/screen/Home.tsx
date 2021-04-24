@@ -117,7 +117,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   return (
     <>
       <AppCanvas>
-        <SearchHeader navigation={navigation} />
+        <SearchHeader {...{ navigation, products }} />
         <SkeletonContent
           containerStyle={{ flex: 1 }}
           isLoading={isLoading}
