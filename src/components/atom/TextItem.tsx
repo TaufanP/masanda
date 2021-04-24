@@ -63,6 +63,11 @@ const styles = () =>
       fontFamily: ff.quicksandBold,
       fontWeight: "800",
     },
+    semibold14: {
+      fontSize: ts.xs,
+      color: cp.white0,
+      fontFamily: ff.quicksandMedium,
+    },
     positiveLabel: {
       fontFamily: ff.quicksandBold,
       textTransform: "uppercase",

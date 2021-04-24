@@ -5,6 +5,7 @@ import strings from "./strings";
 import spacing from "./spacing";
 import skeletonLayout from "./skeleton-layout";
 import textSize from "./textSize";
+import fancyState from "./fancy-states";
 
 export {
   routesName,
@@ -14,4 +15,5 @@ export {
   spacing,
   textSize,
   skeletonLayout,
+  fancyState,
 };

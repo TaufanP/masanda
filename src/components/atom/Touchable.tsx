@@ -26,6 +26,8 @@ interface TouchableProps {
   isLoading?: boolean;
   loadingColor?: string;
   rippleColor?: string;
+  bordered?: boolean;
+  isRound?: boolean;
 }
 
 interface StyleProps {
@@ -36,6 +38,8 @@ interface StyleProps {
   style?: Object;
   isFlex: boolean;
   backgroundColor?: string;
+  bordered?: boolean;
+  isRound?: boolean;
 }
 
 const Touchable: FC<
@@ -54,6 +58,8 @@ const Touchable: FC<
   isLoading,
   loadingColor = "#FFF",
   rippleColor = "#fff9",
+  bordered = false,
+  isRound = false,
   ...props
 }) => {
   const s = styles({
@@ -63,6 +69,8 @@ const Touchable: FC<
     horizontal,
     isFlex,
     backgroundColor,
+    bordered,
+    isRound,
   });
 
   return (
@@ -75,7 +83,13 @@ const Touchable: FC<
         disabled={isLoading}
       >
         <View style={[s.container, style]}>
-          {isLoading ? <ActivityIndicator color={loadingColor} /> : children}
+          {isLoading ? (
+            <ActivityIndicator
+              color={bordered ? backgroundColor : loadingColor}
+            />
+          ) : (
+            children
+          )}
         </View>
       </TouchableNativeFeedback>
     </View>
@@ -89,18 +103,22 @@ const styles = ({
   horizontal,
   isFlex,
   backgroundColor = cp.purple2,
+  bordered,
+  isRound,
 }: StyleProps) =>
   StyleSheet.create({
     parent: { borderRadius: 8, overflow: "hidden" },
     container: {
       width: isFlex ? "auto" : width,
       height: isFlex ? "auto" : height,
-      backgroundColor,
+      backgroundColor: bordered ? "transparent" : backgroundColor,
       justifyContent: "center",
       alignItems: "center",
       borderRadius: 8,
       paddingVertical: vertical,
       paddingHorizontal: horizontal,
+      borderWidth: isRound ? 0 : 1,
+      borderColor: backgroundColor,
     },
   });
 

@@ -36,6 +36,7 @@ const FloatButton: FC<PropsWithChildren<FloatButtonProps>> = ({
         style={[buttonStyle, s.container]}
         width={size}
         height={size}
+        isRound={true}
       >
         {children}
       </Touchable>

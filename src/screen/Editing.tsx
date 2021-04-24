@@ -19,8 +19,11 @@ import {
   textSize as ts,
   fontFamily as ff,
   colorsPalette as cp,
+  fancyState as fan,
 } from "../constants";
 import api from "../api";
+import mockApi from "../api/mockApi";
+import { FancyTypes } from "../constants/fancy-states";
 interface EditingProps {
   navigation?: CompositeNavigationProp<any, any>;
 }
@@ -46,10 +49,13 @@ interface StaticTypeProps {
 }
 
 const Editing: FC<EditingProps> = () => {
-  const [fancyBarState, setFancyBarState] = useState(false);
+  const { defaultState, fancyType } = fan;
+  const [fancyBarState, setFancyBarState] = useState<FancyTypes>(defaultState);
   const route = useRoute<RouteProp<StackParamsList, "EDITING">>();
   const detail = route?.params?.detail;
-  const isEditing = route?.params?.isEditing;
+  const [isEditing, setIsEditing] = useState<boolean>(
+    route?.params?.isEditing || false
+  );
   const [visible, setVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDeleteLoading, setisDeleteLoading] = useState<boolean>(false);
@@ -69,6 +75,17 @@ const Editing: FC<EditingProps> = () => {
     });
   };
 
+  const _cleaningForm = () => {
+    setDataForm({
+      barcode: "",
+      product_name: "",
+      price: "",
+    });
+    setImgFile({ uri: "" });
+    setIsEditing(false);
+    return;
+  };
+
   const _addProduct = async () => {
     setIsLoading(true);
     const dataSend = new FormData();
@@ -78,21 +95,25 @@ const Editing: FC<EditingProps> = () => {
     dataSend.append("barcode", barcode);
     dataSend.append("product_image", imgFile);
     try {
-      const {
-        data: { data },
-      } = await axios.post(`${api.product.postProduct}`, dataSend, {
+      await axios.post(`${api.product.postProduct}`, dataSend, {
         headers: {
           "content-type": "multipart/form-data",
         },
       });
-      setDataForm({
-        barcode: "",
-        product_name: "",
-        price: "",
+      setFancyBarState({
+        visible: true,
+        type: fancyType.success,
+        msg: "Produk berhasil ditambahkan.",
       });
-      setImgFile({ uri: "" });
+
+      _cleaningForm();
       setIsLoading(false);
     } catch (error) {
+      setFancyBarState({
+        visible: true,
+        type: fancyType.failed,
+        msg: `Produk gagal ditambahkan`,
+      });
       console.log("Editing, _addProduct(),", error);
       setIsLoading(false);
     }
@@ -104,19 +125,31 @@ const Editing: FC<EditingProps> = () => {
       barcode: detail?.barcode,
     };
     try {
-      const {
-        data: { data, isSuccess },
-      } = await axios.post(`${api.product.deleteProduct}`, dataSend);
+      // const {
+      //   data: { isSuccess },
+      // } = await axios.post(`${api.product.deleteProduct}`, dataSend);
+      const { isSuccess } = await mockApi(true);
       setisDeleteLoading(false);
       if (isSuccess) {
-        setDataForm({
-          barcode: "",
-          product_name: "",
-          price: "",
+        setFancyBarState({
+          visible: true,
+          type: fancyType.success,
+          msg: "Produk berhasil dihapus.",
         });
-        setImgFile({ uri: "" });
+        _cleaningForm();
+        return;
       }
+      setFancyBarState({
+        visible: true,
+        type: fancyType.failed,
+        msg: "Produk gagal dihapus.",
+      });
     } catch (error) {
+      setFancyBarState({
+        visible: true,
+        type: fancyType.failed,
+        msg: "Produk gagal dihapus.",
+      });
       console.log("Editing, _deleteProduct(), ", error);
       setisDeleteLoading(false);
     }
@@ -133,21 +166,24 @@ const Editing: FC<EditingProps> = () => {
     if (imgFile.hasOwnProperty("type"))
       dataSend.append("product_image", imgFile);
     try {
-      const {
-        data: { data },
-      } = await axios.post(`${api.product.updateProduct}`, dataSend, {
+      await axios.post(`${api.product.updateProduct}`, dataSend, {
         headers: {
           "content-type": "multipart/form-data",
         },
       });
-      setDataForm({
-        barcode: "",
-        product_name: "",
-        price: "",
+      setFancyBarState({
+        visible: true,
+        type: fancyType.success,
+        msg: "Produk berhasil diperbarui.",
       });
-      setImgFile({ uri: "" });
+      _cleaningForm();
       setIsLoading(false);
     } catch (error) {
+      setFancyBarState({
+        visible: true,
+        type: fancyType.failed,
+        msg: "Produk gagal diperbarui.",
+      });
       console.log("Editing, _updateProduct(),", error);
       setIsLoading(false);
     }
@@ -221,7 +257,6 @@ const Editing: FC<EditingProps> = () => {
 
   const _editing = () => {
     isEditing ? _updateProduct() : _addProduct();
-    setFancyBarState(!fancyBarState);
   };
 
   useEffect(() => {
@@ -279,6 +314,7 @@ const Editing: FC<EditingProps> = () => {
             }}
             isLoading={isDeleteLoading}
             backgroundColor={cp.red1}
+            bordered={true}
           >
             {str.delete}
           </TouchableText>
