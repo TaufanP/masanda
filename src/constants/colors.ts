@@ -10,6 +10,7 @@ const colorsPalette = {
   white1: "#ECECEC",
   white2: "#D9D9D9",
   white3: "#A9A9A9",
+  green1: "#3ABF81",
 };
 
 export default colorsPalette;

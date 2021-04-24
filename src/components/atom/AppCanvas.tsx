@@ -2,14 +2,26 @@ import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC, PropsWithChildren } from "react";
 import { View, StyleSheet } from "react-native";
 import { colorsPalette as cp } from "../../constants";
+import FancyBar from "./FancyBar";
 
 interface AppCanvas {
   navigation?: CompositeNavigationProp<any, any>;
+  fancyBarState: boolean;
+  setFancyBarState: any;
 }
 
-const AppCanvas: FC<PropsWithChildren<AppCanvas>> = ({ children }) => {
+const AppCanvas: FC<PropsWithChildren<AppCanvas>> = ({
+  children,
+  fancyBarState,
+  setFancyBarState,
+}) => {
   const s = styles();
-  return <View style={s.container}>{children}</View>;
+  return (
+    <View style={s.container}>
+      {children}
+      <FancyBar {...{ fancyBarState, setFancyBarState }} />
+    </View>
+  );
 };
 
 const styles = () =>

@@ -27,11 +27,13 @@ interface TouchableTextProps {
   height?: number | string;
   rippleColor?: string;
   backgroundColor?: string;
+  isCenter?: boolean;
 }
 
 interface StyleProps {
   bg: boolean;
   backgroundColor?: string;
+  isCenter?: boolean;
 }
 
 const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
@@ -50,8 +52,9 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   height = null,
   rippleColor,
   backgroundColor,
+  isCenter = false,
 }) => {
-  const s = styles({ bg, backgroundColor });
+  const s = styles({ bg, backgroundColor, isCenter });
   return (
     <Touchable
       {...touchableProps}
@@ -71,15 +74,16 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   );
 };
 
-const styles = ({ bg, backgroundColor }: StyleProps) =>
+const styles = ({ bg, backgroundColor, isCenter }: StyleProps) =>
   StyleSheet.create({
     text: {
       fontFamily: ff.quicksandMedium,
       paddingVertical: bg ? sp.xxs : 0,
       paddingHorizontal: bg ? sp.s : 0,
       color: bg ? cp.white : cp.text1,
-      justifyContent: bg ? "center" : "flex-start",
-      alignItems: bg ? "center" : "flex-start",
+      justifyContent: bg ? "center" : isCenter ? "center" : "flex-start",
+      alignItems: bg ? "center" : isCenter ? "center" : "flex-start",
+      flexDirection: "row",
     },
     container: {
       backgroundColor: bg ? backgroundColor || cp.purple2 : "transparent",

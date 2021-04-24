@@ -57,6 +57,12 @@ const styles = () =>
       color: cp.text1,
       fontFamily: ff.quicksandBold,
     },
+    bold14: {
+      fontSize: ts.xs,
+      color: cp.white0,
+      fontFamily: ff.quicksandBold,
+      fontWeight: "800",
+    },
     positiveLabel: {
       fontFamily: ff.quicksandBold,
       textTransform: "uppercase",

@@ -46,6 +46,7 @@ interface StaticTypeProps {
 }
 
 const Editing: FC<EditingProps> = () => {
+  const [fancyBarState, setFancyBarState] = useState(false);
   const route = useRoute<RouteProp<StackParamsList, "EDITING">>();
   const detail = route?.params?.detail;
   const isEditing = route?.params?.isEditing;
@@ -220,6 +221,7 @@ const Editing: FC<EditingProps> = () => {
 
   const _editing = () => {
     isEditing ? _updateProduct() : _addProduct();
+    setFancyBarState(!fancyBarState);
   };
 
   useEffect(() => {
@@ -227,7 +229,7 @@ const Editing: FC<EditingProps> = () => {
   }, []);
 
   return (
-    <AppCanvas>
+    <AppCanvas {...{ fancyBarState, setFancyBarState }}>
       <ImgField
         onPress={() => {
           setVisible(true);
