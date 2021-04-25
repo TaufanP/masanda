@@ -54,7 +54,7 @@ const Touchable: FC<
   style,
   backgroundColor,
   onPress = () => console.log("test"),
-  hitslop,
+  hitslop = { top: 0, bottom: 0, left: 0, right: 0 },
   isLoading,
   loadingColor = "#FFF",
   rippleColor = "#fff9",

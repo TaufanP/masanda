@@ -43,6 +43,11 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSheet, setIsSheet] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<string>("");
+  const [sortParam, setSortParam] = useState({
+    field: "",
+    order: 1,
+  });
   const addPress = myCallback(() => navigation.navigate(r.EDITING));
   const bottomSheet = myCallback(() => handleSnapPress(1));
   const sheetRef = useRef<BottomSheet>(null);
@@ -60,6 +65,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     setIsSheet(false);
     sheetRef.current?.close();
   }, []);
+
   const detailSetter = (item: MainProduct) => {
     setDetail(item);
     bottomSheet();
@@ -76,6 +82,35 @@ const Home: FC<HomeProps> = ({ navigation }) => {
       console.log("Home, _getProducts():", error);
     }
     setRefreshing(false);
+  };
+
+  const clearState = () => {
+    onRefresh();
+    setKeyword("");
+    setSortParam({ field: "", order: 1 });
+  };
+
+  const settingSortParam = ({ type, order }: any) => {
+    setSortParam({ field: type, order });
+    return;
+  };
+
+  const searchProducts = async () => {
+    setIsLoading(true);
+    setIsData(false);
+    const dataSend = { keyword, ...sortParam };
+    try {
+      const {
+        data: { data },
+      } = await axios.post(`${api.product.searchProduct}`, dataSend);
+      setProducts(data);
+      setIsData(true);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Home, searchProducts", { error });
+      setIsData(true);
+      setIsLoading(false);
+    }
   };
 
   const _getProducts = () => {
@@ -114,10 +149,32 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     };
   }, []);
 
+  useEffect(() => {
+    let isSubscribed = true;
+    if (isSubscribed) {
+      searchProducts();
+    }
+    return () => {
+      isSubscribed = false;
+    };
+  }, [sortParam]);
+
   return (
     <>
       <AppCanvas>
-        <SearchHeader {...{ navigation, products }} />
+        <SearchHeader
+          {...{
+            navigation,
+            products,
+            setter: (e: string) => setKeyword(e),
+            submitAction: () => searchProducts(),
+            extraAction: () => clearState(),
+            keyword,
+            sortAction: ({ type, order }: any) =>
+              settingSortParam({ type, order }),
+            currentSort: sortParam,
+          }}
+        />
         <SkeletonContent
           containerStyle={{ flex: 1 }}
           isLoading={isLoading}

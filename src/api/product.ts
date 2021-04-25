@@ -5,6 +5,7 @@ const product = {
   postProduct: `${url}/product/add`,
   deleteProduct: `${url}/product/delete`,
   updateProduct: `${url}/product/update`,
+  searchProduct: `${url}/product/search`,
 };
 
 export default product;

@@ -73,6 +73,9 @@ const styles = () =>
       color: cp.white0,
       fontFamily: ff.quicksandMedium,
     },
+    // COLOR
+    primeColor: { color: cp.purple2 },
+    defaultColor: { color: cp.text1 },
     positiveLabel: {
       fontFamily: ff.quicksandBold,
       textTransform: "uppercase",

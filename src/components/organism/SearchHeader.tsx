@@ -1,28 +1,78 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { DArrow, Scan } from "../../../assets";
-import { myMemo, myCallback } from "../../hooks";
+import { CloseX, Scan } from "../../../assets";
 import {
   colorsPalette as cp,
+  routesName as r,
   spacing as sp,
   strings as str,
 } from "../../constants";
+import { MainProduct } from "../../constants/types";
+import { myMemo } from "../../hooks";
 import { TextField, Touchable } from "../atom/";
 import { TouchableText } from "../molecules";
-import { routesName as r } from "../../constants";
-import { MainProduct } from "../../constants/types";
 
 interface SearchHeader {
   navigation: CompositeNavigationProp<any, any>;
   products: MainProduct[];
+  submitAction: any;
+  setter: any;
+  extraAction: any;
+  keyword: string;
+  sortAction: any;
+  currentSort: any;
 }
 
-const SearchHeader: FC<SearchHeader> = ({ navigation, products }) => {
+const SearchHeader: FC<SearchHeader> = ({
+  navigation,
+  products,
+  submitAction,
+  setter,
+  extraAction,
+  keyword,
+  sortAction,
+  currentSort,
+}) => {
   const s = styles();
+  const [taps, setTaps] = useState<any>(0);
   const styleInput = myMemo({ marginRight: sp.s });
-  // const namePress = myCallback(() => console.log("hasilnamna"));
-  // const pricepress = myCallback(() => console.log("hasilharga"));
+
+  const textColorName =
+    currentSort.field == "product_name" ? "primeColor" : "defaultColor";
+  const textColorPrice =
+    currentSort.field == "price" ? "primeColor" : "defaultColor";
+
+  const arrowPrice =
+    currentSort.field == "price" && currentSort.order == 1
+      ? "Terendah "
+      : currentSort.field == "price" && currentSort.order == -1
+      ? "Tertinggi "
+      : "Harga ";
+  const arrowName =
+    currentSort.field == "product_name" && currentSort.order == 1
+      ? "A-Z "
+      : currentSort.field == "product_name" && currentSort.order == -1
+      ? "Z-A "
+      : "Nama ";
+
+  const onPressSort = (type: string) => {
+    if (taps == 0) {
+      sortAction({ type: "", order: 1 });
+      setTaps(1);
+      return;
+    }
+    if (taps == 1) {
+      sortAction({ type, order: 1 });
+      setTaps(2);
+      return;
+    }
+    if (taps == 2) {
+      sortAction({ type, order: -1 });
+      setTaps(0);
+      return;
+    }
+  };
 
   return (
     <View style={s.container}>
@@ -32,6 +82,12 @@ const SearchHeader: FC<SearchHeader> = ({ navigation, products }) => {
           style={styleInput}
           isRow={true}
           useGap={false}
+          onSubmitEditing={submitAction}
+          setter={setter}
+          isExtra={keyword.length !== 0}
+          extraComp={<CloseX fill={cp.white2} width={16} height={16} />}
+          extraAction={extraAction}
+          defaultValue={keyword}
         />
         <Touchable
           width={40}
@@ -42,18 +98,25 @@ const SearchHeader: FC<SearchHeader> = ({ navigation, products }) => {
           <Scan width={24} height={24} fill={"#FFF"} />
         </Touchable>
       </View>
-      {/* <View style={s.section}>
+      <View style={s.section}>
         <TouchableText
-          onPress={() => console.log("hasilnamna")}
+          onPress={() => onPressSort("product_name")}
           buttonStyle={{ marginRight: sp.xm }}
           bg={false}
+          isRound={true}
+          type={textColorName}
         >
-          Nama <DArrow />
+          {arrowName}
         </TouchableText>
-        <TouchableText onPress={() => console.log("hasilnamna")} bg={false}>
-          Harga <DArrow />
+        <TouchableText
+          onPress={() => onPressSort("price")}
+          bg={false}
+          isRound={true}
+          type={textColorPrice}
+        >
+          {arrowPrice}
         </TouchableText>
-      </View> */}
+      </View>
     </View>
   );
 };

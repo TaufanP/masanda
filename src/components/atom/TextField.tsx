@@ -1,4 +1,4 @@
-import React, { FC, useState, memo } from "react";
+import React, { FC, useState, memo, ReactNode } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -23,6 +23,7 @@ interface TextFieldProps {
   ref?: any;
   isExtra?: boolean;
   extraAction?: any;
+  extraComp: ReactNode;
 }
 
 const TextField: FC<TextFieldProps & TextInputProps> = ({
@@ -35,6 +36,7 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
   optKey = "none",
   ref,
   isExtra = false,
+  extraComp = <Scan width={24} height={24} fill={cp.purple2} />,
   extraAction = () => console.log("extraAction"),
   ...props
 }) => {
@@ -61,7 +63,7 @@ const TextField: FC<TextFieldProps & TextInputProps> = ({
       />
       {isExtra && (
         <TouchableOpacity style={styles.extraAction} onPress={extraAction}>
-          <Scan width={24} height={24} fill={cp.purple2} />
+          {extraComp}
         </TouchableOpacity>
       )}
       {/* {secureTextEntry && (
