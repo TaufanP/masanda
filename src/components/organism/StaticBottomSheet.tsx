@@ -137,7 +137,7 @@ const StaticBottomSheet: FC<StaticBottomSheetProps> = ({
               <View style={[s.buttonCont, s.leftButton]}>
                 <TouchableText
                   onPress={onPressLeft}
-                  isAuto={false}
+                  buttonType="100"
                   type="positiveLabel"
                 >
                   {leftLabel}
@@ -146,7 +146,7 @@ const StaticBottomSheet: FC<StaticBottomSheetProps> = ({
               <View style={[s.buttonCont, s.rightButton]}>
                 <TouchableText
                   onPress={onPressRight}
-                  isAuto={false}
+                  buttonType="100"
                   bg={false}
                   buttonStyle={{ borderWidth: 1, borderColor: cp.purple1 }}
                   type="negativeLabel"

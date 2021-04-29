@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { fontFamily as ff, colorsPalette as cp } from "../../constants";
-import { Touchable } from "../atom";
+import { Touchable, Button } from "../atom";
 
 interface FloatButtonProps {
   touchableProps?: TouchableNativeFeedbackProps;
@@ -30,7 +30,7 @@ const FloatButton: FC<PropsWithChildren<FloatButtonProps>> = ({
   const s = styles({ size });
   return (
     <View style={s.floatCont}>
-      <Touchable
+      <Button
         onPress={onPress}
         {...touchableProps}
         style={[buttonStyle, s.container]}
@@ -39,7 +39,17 @@ const FloatButton: FC<PropsWithChildren<FloatButtonProps>> = ({
         isRound={true}
       >
         {children}
-      </Touchable>
+      </Button>
+      {/* <Touchable
+        onPress={onPress}
+        {...touchableProps}
+        style={[buttonStyle, s.container]}
+        width={size}
+        height={size}
+        isRound={true}
+      >
+        {children}
+      </Touchable> */}
     </View>
   );
 };

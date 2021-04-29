@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get("screen");
 const { fancyType, defaultState } = fan;
 
 const fancyButtonFormula = width * 0.18;
-const fancyButtonWidth = fancyButtonFormula < 50 ? 50 : fancyButtonFormula;
+const fancyButtonWidth = fancyButtonFormula < 64 ? 64 : fancyButtonFormula;
 
 interface FancyBarProps {
   fancyBarState?: FancyTypes;
@@ -30,7 +30,6 @@ const FancyBar: FC<FancyBarProps> = ({
   setFancyBarState,
 }) => {
   const bottomContainer = new Animated.Value(0);
-
   const onCalled = () => {
     if (fancyBarState.visible) {
       Animated.sequence([
@@ -66,9 +65,9 @@ const FancyBar: FC<FancyBarProps> = ({
       <TouchableText
         bg={false}
         type="bold14"
-        isAuto={false}
         width={fancyButtonWidth}
-        height="100%"
+        height={50}
+        buttonType="Fixed"
         isCenter={true}
         onPress={() => setFancyBarState(false)}
         isRound={true}
@@ -81,11 +80,6 @@ const FancyBar: FC<FancyBarProps> = ({
 
 const styles = ({ bottomContainer, state }: StyleProps) =>
   StyleSheet.create({
-    fancyButton: {
-      borderWidth: 1,
-      borderColor: "red",
-      height: "100%",
-    },
     container: {
       width: width - 32,
       left: 16,

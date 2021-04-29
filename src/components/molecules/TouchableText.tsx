@@ -10,7 +10,7 @@ import {
   colorsPalette as cp,
   spacing as sp,
 } from "../../constants";
-import { Touchable, TextItem } from "../atom";
+import { Touchable, TextItem, Button } from "../atom";
 
 interface TouchableTextProps {
   touchableProps?: TouchableOpacityProps;
@@ -30,6 +30,7 @@ interface TouchableTextProps {
   isCenter?: boolean;
   bordered?: boolean;
   isRound?: boolean;
+  buttonType?: string;
 }
 
 interface StyleProps {
@@ -52,34 +53,53 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   type,
   isLoading,
   loadingColor,
-  width = null,
-  height = null,
+  width = 40,
+  height = 40,
   rippleColor,
   backgroundColor,
   isCenter = false,
   bordered = false,
   isRound = false,
+  buttonType = "Padding",
 }) => {
   const s = styles({ bg, backgroundColor, isCenter, bordered, isRound });
   return (
-    <Touchable
+    <Button
       {...touchableProps}
       style={[buttonStyle, s.container]}
-      width={isAuto ? "auto" : width || "100%"}
-      height={isAuto ? "auto" : height || "100%"}
       onPress={onPress}
-      isFlex={isAuto}
       isLoading={isLoading}
       loadingColor={loadingColor}
       rippleColor={rippleColor}
-      bordered={bordered}
-      isRound={isRound}
       backgroundColor={backgroundColor}
+      type={buttonType}
+      vertical={4}
+      horizontal={8}
+      width={width}
+      height={height}
     >
       <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
         {children}
       </TextItem>
-    </Touchable>
+    </Button>
+    // <Touchable
+    //   {...touchableProps}
+    //   style={[buttonStyle, s.container]}
+    //   width={isAuto ? "auto" : width || "100%"}
+    //   height={isAuto ? "auto" : height || "100%"}
+    //   onPress={onPress}
+    //   isFlex={isAuto}
+    //   isLoading={isLoading}
+    //   loadingColor={loadingColor}
+    //   rippleColor={rippleColor}
+    //   bordered={bordered}
+    //   isRound={isRound}
+    //   backgroundColor={backgroundColor}
+    // >
+    //   <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
+    //     {children}
+    //   </TextItem>
+    // </Touchable>
   );
 };
 

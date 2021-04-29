@@ -10,7 +10,7 @@ import {
 } from "../../constants";
 import { MainProduct } from "../../constants/types";
 import { myMemo } from "../../hooks";
-import { TextField, Touchable } from "../atom/";
+import { TextField, Touchable, Button } from "../atom/";
 import { TouchableText } from "../molecules";
 
 interface SearchHeader {
@@ -89,7 +89,17 @@ const SearchHeader: FC<SearchHeader> = ({
           extraAction={extraAction}
           defaultValue={keyword}
         />
-        <Touchable
+        <Button
+          width={40}
+          height={40}
+          type="Fixed"
+          onPress={() =>
+            navigation.navigate(r.SCANNER, { products: searchData })
+          }
+        >
+          <Scan width={24} height={24} fill={"#FFF"} />
+        </Button>
+        {/* <Touchable
           width={40}
           height={40}
           isFlex={false}
@@ -98,7 +108,7 @@ const SearchHeader: FC<SearchHeader> = ({
           }
         >
           <Scan width={24} height={24} fill={"#FFF"} />
-        </Touchable>
+        </Touchable> */}
       </View>
       <View style={s.section}>
         <TouchableText

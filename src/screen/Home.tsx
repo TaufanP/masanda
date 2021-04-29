@@ -195,7 +195,9 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     ({ item }) => <ProductTile item={item} setter={detailSetter} />,
     [products]
   );
-  const ListEmptyComponent = <EmptyState onPress={addPress} />;
+  const ListEmptyComponent = (
+    <EmptyState onPress={addPress} extraStyle={{ left: -16 }} />
+  );
 
   return (
     <>

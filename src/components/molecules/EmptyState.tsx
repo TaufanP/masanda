@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { EmptyIcon, Plus } from "../../../assets";
 import { spacing as sp, strings as str } from "../../constants";
-import { Gap, TextItem, Touchable } from "../atom";
+import { Gap, TextItem, Touchable, Button } from "../atom";
 const { width, height } = Dimensions.get("screen");
 
 interface EmptyStateProps {
@@ -20,24 +20,31 @@ interface EmptyStateProps {
   buttonText?: string;
   addIcon?: any;
   withIcon?: boolean;
+  extraStyle?: any;
 }
 
-const EmptyState: FC<PropsWithChildren<EmptyStateProps>> = ({
+const EmptyState: FC<EmptyStateProps> = ({
   onPress,
   subtitle = str.addingNow,
   title = str.notAddingYet,
   buttonText = str.adding,
   addIcon = <Plus />,
   withIcon = true,
+  extraStyle,
 }) => {
   const s = styles();
   return (
-    <View style={s.container}>
+    <View style={[s.container, extraStyle]}>
       <EmptyIcon width={168} height={168} />
       <TextItem type="semiHeaderC">{title}</TextItem>
       <TextItem type="defaultC">{subtitle}</TextItem>
       <Gap vertical={sp.xxxm} />
-      <Touchable vertical={sp.s} horizontal={sp.xxxm} onPress={onPress}>
+      <Button
+        vertical={sp.s}
+        horizontal={sp.xxxm}
+        onPress={onPress}
+        type="Padding"
+      >
         <View style={s.rowCont}>
           <TextItem type="defaultW">{buttonText}</TextItem>
 
@@ -48,7 +55,19 @@ const EmptyState: FC<PropsWithChildren<EmptyStateProps>> = ({
             </>
           )}
         </View>
-      </Touchable>
+      </Button>
+      {/* <Touchable vertical={sp.s} horizontal={sp.xxxm} onPress={onPress}>
+        <View style={s.rowCont}>
+          <TextItem type="defaultW">{buttonText}</TextItem>
+
+          {withIcon && (
+            <>
+              <Gap horizontal={sp.s} />
+              {addIcon}
+            </>
+          )}
+        </View>
+      </Touchable> */}
     </View>
   );
 };

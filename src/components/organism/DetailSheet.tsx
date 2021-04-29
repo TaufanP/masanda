@@ -51,10 +51,9 @@ const DetailSheet: FC<DetailSheetProps> = ({
           <View style={[s.buttonCont, s.leftButton]}>
             <TouchableText
               onPress={onPressLeft}
-              isAuto={false}
               type="negativeLabel"
+              buttonType="100"
               bg={false}
-              height="100%"
               buttonStyle={{ borderWidth: 1, borderColor: cp.purple1 }}
               rippleColor={cp.purple3}
             >
@@ -64,8 +63,7 @@ const DetailSheet: FC<DetailSheetProps> = ({
           <View style={[s.buttonCont, s.rightButton]}>
             <TouchableText
               onPress={onPressRight}
-              height="100%"
-              isAuto={false}
+              buttonType="100"
               type="positiveLabel"
             >
               {str.ok}
