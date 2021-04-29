@@ -7,6 +7,7 @@ import ImgPreview from "./ImgPreview";
 import FormContainer from "./FormContainer";
 import OverlayArea from "./OverlayArea";
 import ScannerComp from "./ScannerComp";
+import LoadingButton from "./LoadingButton";
 
 export {
   AppCanvas,
@@ -18,4 +19,5 @@ export {
   FormContainer,
   OverlayArea,
   ScannerComp,
+  LoadingButton,
 };

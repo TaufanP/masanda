@@ -1,6 +1,13 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import axios from "axios";
-import React, { FC, useEffect, useState, useRef, useCallback } from "react";
+import React, {
+  FC,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { FlatList, StyleSheet, View, RefreshControl } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
@@ -30,6 +37,7 @@ interface HomeProps {
 
 const Home: FC<HomeProps> = ({ navigation }) => {
   const s = styles();
+
   const [products, setProducts] = useState<MainProduct[]>([]);
   const [detail, setDetail] = useState<MainProduct>({
     product_name: "",
@@ -48,10 +56,16 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     field: "",
     order: 1,
   });
+
   const addPress = myCallback(() => navigation.navigate(r.EDITING));
   const bottomSheet = myCallback(() => handleSnapPress(1));
+
   const sheetRef = useRef<BottomSheet>(null);
+
   const snapPoints = myMemo(["0%", "60%", "100%"]);
+  const searchData = useMemo(() => products, [products]);
+  const currentSort = useMemo(() => sortParam, [sortParam]);
+
   const handleSheetChange = useCallback((index) => {
     if (index == 0) {
       setIsSheet(false);
@@ -65,6 +79,22 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     setIsSheet(false);
     sheetRef.current?.close();
   }, []);
+  const searchSetter = useCallback((e: string) => setKeyword(e), []);
+  const submitAction = useCallback(() => searchProducts(), [
+    keyword,
+    sortParam,
+  ]);
+  const extraAction = useCallback(() => clearState(), []);
+  const sortAction = useCallback(
+    ({ type, order }: any) => settingSortParam({ type, order }),
+    [sortParam]
+  );
+  const overlayAreaPress = useCallback(() => handleClosePress(), []);
+  const onPressRight = useCallback(() => handleClosePress(), []);
+  const onPressLeft = useCallback(() => {
+    handleClosePress();
+    navigation.navigate(r.EDITING, { detail, isEditing: true });
+  }, [detail]);
 
   const detailSetter = (item: MainProduct) => {
     setDetail(item);
@@ -159,20 +189,27 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     };
   }, [sortParam]);
 
+  // PRODUCT FLATLIST
+  const keyExtractor = (item: MainProduct) => `${item.barcode}`;
+  const renderItem = useCallback(
+    ({ item }) => <ProductTile item={item} setter={detailSetter} />,
+    [products]
+  );
+  const ListEmptyComponent = <EmptyState onPress={addPress} />;
+
   return (
     <>
       <AppCanvas>
         <SearchHeader
           {...{
             navigation,
-            products,
-            setter: (e: string) => setKeyword(e),
-            submitAction: () => searchProducts(),
-            extraAction: () => clearState(),
+            searchData,
+            setter: searchSetter,
+            submitAction,
+            extraAction,
             keyword,
-            sortAction: ({ type, order }: any) =>
-              settingSortParam({ type, order }),
-            currentSort: sortParam,
+            sortAction,
+            currentSort,
           }}
         />
         <SkeletonContent
@@ -182,21 +219,18 @@ const Home: FC<HomeProps> = ({ navigation }) => {
         >
           {isData ? (
             <FlatList
-              extraData={isData}
-              columnWrapperStyle={{ justifyContent: "space-between" }}
-              numColumns={2}
-              keyExtractor={(item) => `${item.barcode}`}
-              contentContainerStyle={{
-                paddingVertical: sp.xm,
-                paddingHorizontal: sp.xxxm,
+              {...{
+                extraData: isData,
+                columnWrapperStyle: s.columnWrapper,
+                numColumns: 2,
+                keyExtractor,
+                contentContainerStyle: s.contentContainerFlatlist,
+                data: products,
+                renderItem,
+                ListEmptyComponent,
+                refreshControl,
+                initialNumToRender: 4,
               }}
-              data={products}
-              renderItem={({ item }) => (
-                <ProductTile item={item} setter={detailSetter} />
-              )}
-              ListEmptyComponent={<EmptyState onPress={addPress} />}
-              refreshControl={refreshControl}
-              initialNumToRender={4}
             />
           ) : (
             <EmptyState
@@ -216,7 +250,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
           </FloatButton>
         )}
       </AppCanvas>
-      {isSheet && <OverlayArea onPress={() => handleClosePress()} />}
+      {isSheet && <OverlayArea onPress={overlayAreaPress} />}
       <BottomSheet
         ref={sheetRef}
         index={0}
@@ -225,14 +259,9 @@ const Home: FC<HomeProps> = ({ navigation }) => {
       >
         <BottomSheetView style={s.contentContainer}>
           <DetailSheet
-            {...{
-              onPressRight: () => handleClosePress(),
-              detail,
-              onPressLeft: () => {
-                handleClosePress();
-                navigation.navigate(r.EDITING, { detail, isEditing: true });
-              },
-            }}
+            onPressRight={onPressRight}
+            detail={detail}
+            onPressLeft={onPressLeft}
           />
         </BottomSheetView>
       </BottomSheet>
@@ -242,6 +271,11 @@ const Home: FC<HomeProps> = ({ navigation }) => {
 
 const styles = () =>
   StyleSheet.create({
+    contentContainerFlatlist: {
+      paddingVertical: sp.xm,
+      paddingHorizontal: sp.xxxm,
+    },
+    columnWrapper: { justifyContent: "space-between" },
     contentContainer: {
       backgroundColor: "white",
     },

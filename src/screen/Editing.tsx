@@ -1,11 +1,10 @@
 import { CompositeNavigationProp, useRoute } from "@react-navigation/core";
 import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
-import React, { FC, ReactNode, useEffect, useState } from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
+import React, { FC, ReactNode, useCallback, useEffect, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import api from "../api";
-import mockApi from "../api/mockApi";
 import {
   AppCanvas,
   FormContainer,
@@ -70,7 +69,13 @@ const Editing: FC<EditingProps> = () => {
     price: "",
   });
   const [staticType, setStaticType] = useState<string>("");
+
   const s = styles();
+
+  const onPressImageField = useCallback(() => {
+    setVisible(true);
+    setStaticType("ImagePicker");
+  }, []);
 
   const processScanned = ({ data }: any) => {
     setDataForm((current) => {
@@ -136,10 +141,9 @@ const Editing: FC<EditingProps> = () => {
       barcode: detail?.barcode,
     };
     try {
-      // const {
-      //   data: { isSuccess },
-      // } = await axios.post(`${api.product.deleteProduct}`, dataSend);
-      const { isSuccess } = await mockApi(true);
+      const {
+        data: { isSuccess },
+      } = await axios.post(`${api.product.deleteProduct}`, dataSend);
       setisDeleteLoading(false);
       if (isSuccess) {
         setFancyBarState({
@@ -247,6 +251,10 @@ const Editing: FC<EditingProps> = () => {
       }
     );
 
+  const _editing = () => {
+    isEditing ? _updateProduct() : _addProduct();
+  };
+
   const staticSwitch: StaticTypeProps = {
     ImagePicker: {
       leftLabel: "Kamera",
@@ -266,26 +274,16 @@ const Editing: FC<EditingProps> = () => {
     },
   };
 
-  const _editing = () => {
-    isEditing ? _updateProduct() : _addProduct();
-  };
-
   useEffect(() => {
     _checkingParams();
   }, []);
 
   return (
     <AppCanvas {...{ fancyBarState, setFancyBarState }}>
-      <ImgField
-        onPress={() => {
-          setVisible(true);
-          setStaticType("ImagePicker");
-        }}
-        uri={imgFile.uri}
-      />
+      <ImgField onPress={onPressImageField} uri={imgFile.uri} />
       <FormContainer vertical={48}>
         <TextField
-          placeholder={"Barcode Barang (Opsional)"}
+          placeholder={str.barcodePlaceholder}
           keyboardType="numeric"
           setter={_setter}
           optKey="barcode"
@@ -295,14 +293,14 @@ const Editing: FC<EditingProps> = () => {
           extraAction={() => setIsScanning(true)}
         />
         <TextField
-          placeholder={"Nama Barang"}
+          placeholder={str.productName}
           setter={_setter}
           optKey="product_name"
           maxLength={150}
           defaultValue={dataForm.product_name.toString()}
         />
         <TextField
-          placeholder={"Harga Barang"}
+          placeholder={str.productPrice}
           keyboardType="numeric"
           setter={_setter}
           optKey="price"

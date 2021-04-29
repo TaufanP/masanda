@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import { colorsPalette as cp } from "../../constants";
+import LoadingButton from "./LoadingButton";
 
 interface HitSlopProps {
   top?: number;
@@ -84,10 +85,11 @@ const Touchable: FC<
       >
         <View style={[s.container, style]}>
           {isLoading ? (
-            <ActivityIndicator
-              color={bordered ? backgroundColor : loadingColor}
-            />
+            <LoadingButton color={bordered ? backgroundColor : loadingColor} />
           ) : (
+            // <ActivityIndicator
+            //   color={bordered ? backgroundColor : loadingColor}
+            // />
             children
           )}
         </View>

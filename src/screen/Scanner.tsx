@@ -1,23 +1,27 @@
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import {
   CompositeNavigationProp,
   RouteProp,
   useRoute,
 } from "@react-navigation/core";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import React, { FC, useState, useRef, useCallback } from "react";
-import { Alert, Dimensions, StyleSheet, View } from "react-native";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import React, { FC, useCallback, useRef, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import {
   AppCanvas,
+  DetailSheet,
+  OverlayArea,
   StaticBottomSheet,
   TouchableText,
-  OverlayArea,
-  DetailSheet,
 } from "../components";
-import { routesName as r, colorsPalette as cp } from "../constants";
-import { myCallback, myMemo } from "../hooks";
+import {
+  colorsPalette as cp,
+  routesName as r,
+  strings as str,
+} from "../constants";
 import StackParamsList from "../constants/screen-params";
 import { MainProduct } from "../constants/types";
+import { myCallback, myMemo } from "../hooks";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -28,6 +32,7 @@ interface ScannerProps {
 const Scanner: FC<ScannerProps> = ({ navigation }) => {
   const route = useRoute<RouteProp<StackParamsList, "SCANNER">>();
   const { products } = route.params;
+
   const [scanned, setScanned] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(false);
   const [isSheet, setIsSheet] = useState<boolean>(false);
@@ -40,24 +45,56 @@ const Scanner: FC<ScannerProps> = ({ navigation }) => {
     product_image: "",
   });
   const [scannedCode, setScannedCode] = useState<string>("");
-  const { alert } = Alert;
+
   const s = styles;
-  const bottomSheet = myCallback(() => handleSnapPress(1));
   const sheetRef = useRef<BottomSheet>(null);
+
   const snapPoints = myMemo(["0%", "60%", "100%"]);
+
+  const bottomSheet = myCallback(() => handleSnapPress(1));
+
   const handleSheetChange = useCallback((index) => {
     if (index == 0) {
       setIsSheet(false);
     }
   }, []);
+
   const handleSnapPress = useCallback((index) => {
     setIsSheet(true);
     sheetRef.current?.snapTo(index);
   }, []);
+
   const handleClosePress = useCallback(() => {
     setIsSheet(false);
     sheetRef.current?.close();
   }, []);
+
+  const onPressRightStatic = useCallback(() => {
+    setScanned(false);
+    setVisible(false);
+  }, []);
+
+  const onPressLeftStatic = useCallback(() => {
+    setVisible(false);
+    setScannedCode("");
+    navigation?.navigate(r.EDITING, {
+      isEditing: false,
+      detail: {
+        _id: "",
+        barcode: scannedCode,
+        price: "",
+        product_name: "",
+        product_image: "",
+        image_name: "",
+      },
+    });
+  }, []);
+
+  const onPressLeft = useCallback(() => {
+    handleClosePress();
+    navigation?.navigate(r.EDITING, { detail, isEditing: true });
+  }, [detail]);
+
   const handleBarCodeScanned = ({ type, data }: any) => {
     setScanned(true);
     try {
@@ -102,33 +139,16 @@ const Scanner: FC<ScannerProps> = ({ navigation }) => {
           {...{
             visible,
             setVisible,
-            leftLabel: "TAMBAH",
-            rightLabel: "SCAN ULANG",
-            mainTitle: "Produk tidak ditemukan",
-            subTitle: `Tambahkan produk ke toko?`,
-            onPressRight: () => {
-              setScanned(false);
-              setVisible(false);
-            },
-            onPressLeft: () => {
-              setVisible(false);
-              setScannedCode("");
-              navigation?.navigate(r.EDITING, {
-                isEditing: false,
-                detail: {
-                  _id: "",
-                  barcode: scannedCode,
-                  price: "",
-                  product_name: "",
-                  product_image: "",
-                  image_name: "",
-                },
-              });
-            },
+            leftLabel: str.adding,
+            rightLabel: str.rescan,
+            mainTitle: str.productNotFound,
+            subTitle: str.addToStore,
+            onPressRight: onPressRightStatic,
+            onPressLeft: onPressLeftStatic,
           }}
         />
       </AppCanvas>
-      {isSheet && <OverlayArea onPress={() => handleClosePress()} />}
+      {isSheet && <OverlayArea onPress={handleClosePress} />}
       <BottomSheet
         ref={sheetRef}
         index={0}
@@ -138,12 +158,9 @@ const Scanner: FC<ScannerProps> = ({ navigation }) => {
         <BottomSheetView style={s.contentContainer}>
           <DetailSheet
             {...{
-              onPressRight: () => handleClosePress(),
+              onPressRight: handleClosePress,
               detail,
-              onPressLeft: () => {
-                handleClosePress();
-                navigation?.navigate(r.EDITING, { detail, isEditing: true });
-              },
+              onPressLeft,
             }}
           />
         </BottomSheetView>

@@ -1,4 +1,4 @@
-import React, { FC, memo, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -69,4 +69,4 @@ const styles = () =>
     },
   });
 
-export default memo(EmptyState);
+export default EmptyState;

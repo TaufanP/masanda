@@ -23,7 +23,7 @@ interface TextFieldProps {
   ref?: any;
   isExtra?: boolean;
   extraAction?: any;
-  extraComp: ReactNode;
+  extraComp?: ReactNode;
 }
 
 const TextField: FC<TextFieldProps & TextInputProps> = ({
