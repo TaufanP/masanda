@@ -1,16 +1,15 @@
 import React, { FC, memo, PropsWithChildren } from "react";
 import {
   StyleSheet,
-  Text,
-  TouchableOpacityProps,
   TextInputProps,
+  TouchableOpacityProps,
 } from "react-native";
 import {
-  fontFamily as ff,
   colorsPalette as cp,
+  fontFamily as ff,
   spacing as sp,
 } from "../../constants";
-import { Touchable, TextItem, Button } from "../atom";
+import { Button, TextItem } from "../atom";
 
 interface TouchableTextProps {
   touchableProps?: TouchableOpacityProps;
@@ -49,7 +48,6 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   bg = true,
   textStyle,
   onPress,
-  isAuto,
   type,
   isLoading,
   loadingColor,
@@ -82,24 +80,6 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
         {children}
       </TextItem>
     </Button>
-    // <Touchable
-    //   {...touchableProps}
-    //   style={[buttonStyle, s.container]}
-    //   width={isAuto ? "auto" : width || "100%"}
-    //   height={isAuto ? "auto" : height || "100%"}
-    //   onPress={onPress}
-    //   isFlex={isAuto}
-    //   isLoading={isLoading}
-    //   loadingColor={loadingColor}
-    //   rippleColor={rippleColor}
-    //   bordered={bordered}
-    //   isRound={isRound}
-    //   backgroundColor={backgroundColor}
-    // >
-    //   <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
-    //     {children}
-    //   </TextItem>
-    // </Touchable>
   );
 };
 

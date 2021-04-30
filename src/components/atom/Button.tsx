@@ -15,7 +15,7 @@ interface HitSlopProps {
   right?: number;
   bottom?: number;
 }
-interface TouchableProps {
+interface ButtonProps {
   onPress?: Function;
   width?: number | string;
   height?: number | string;
@@ -44,8 +44,8 @@ interface StyleProps {
   isRound?: boolean;
 }
 
-const Touchable: FC<
-  PropsWithChildren<TouchableProps & TouchableNativeFeedbackProps>
+const Button: FC<
+  PropsWithChildren<ButtonProps & TouchableNativeFeedbackProps>
 > = ({
   children,
   width = 40,
@@ -135,4 +135,4 @@ const styles = ({
     },
   });
 
-export default Touchable;
+export default Button;

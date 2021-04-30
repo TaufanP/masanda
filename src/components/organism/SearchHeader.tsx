@@ -1,6 +1,6 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
-import React, { FC, useState, memo } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { FC, memo, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { CloseX, Scan } from "../../../assets";
 import {
   colorsPalette as cp,
@@ -10,7 +10,7 @@ import {
 } from "../../constants";
 import { MainProduct } from "../../constants/types";
 import { myMemo } from "../../hooks";
-import { TextField, Touchable, Button } from "../atom/";
+import { Button, TextField } from "../atom/";
 import { TouchableText } from "../molecules";
 
 interface SearchHeader {
@@ -99,16 +99,6 @@ const SearchHeader: FC<SearchHeader> = ({
         >
           <Scan width={24} height={24} fill={"#FFF"} />
         </Button>
-        {/* <Touchable
-          width={40}
-          height={40}
-          isFlex={false}
-          onPress={() =>
-            navigation.navigate(r.SCANNER, { products: searchData })
-          }
-        >
-          <Scan width={24} height={24} fill={"#FFF"} />
-        </Touchable> */}
       </View>
       <View style={s.section}>
         <TouchableText

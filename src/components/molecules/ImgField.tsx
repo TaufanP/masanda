@@ -1,6 +1,6 @@
 import React, { FC, memo } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { ImgPreview, Touchable, Button } from "../atom";
+import { Button, ImgPreview } from "../atom";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -20,9 +20,6 @@ const ImgField: FC<ImgField> = ({ onPress, uri }) => {
       <Button backgroundColor="transparent" onPress={onPress} type="fixed">
         <View style={s.container} />
       </Button>
-      {/* <Touchable backgroundColor="transparent" onPress={onPress}>
-        <View style={s.container} />
-      </Touchable> */}
     </View>
   );
 };

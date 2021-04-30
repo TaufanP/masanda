@@ -1,12 +1,12 @@
-import React, { useRef, useEffect, ReactNode, FC } from "react";
+import React, { FC, ReactNode, useEffect, useRef } from "react";
 import {
   Alert,
+  Animated,
   Dimensions,
   StyleSheet,
   Text,
-  View,
-  Animated,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { EmptyIcon } from "../../../assets";
 import {
@@ -15,7 +15,6 @@ import {
   spacing as sp,
   textSize as ts,
 } from "../../constants";
-import { Touchable } from "../atom";
 import { TouchableText } from "../molecules";
 
 const { width, height } = Dimensions.get("screen");
@@ -113,12 +112,6 @@ const StaticBottomSheet: FC<StaticBottomSheetProps> = ({
         />
       </Animated.View>
       <View style={s.contentCont}>
-        {/* <Touchable
-          style={s.closeCont}
-          onPress={() => setVisible(false)}
-        >
-          <CloseX fill={cp.text1} width={8} height={8} />
-        </Touchable> */}
         <View style={s.imageGroup}>
           {mainIcon}
           <Text style={s.titleText}>{mainTitle}</Text>

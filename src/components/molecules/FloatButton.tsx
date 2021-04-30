@@ -1,13 +1,7 @@
 import React, { FC, memo, PropsWithChildren } from "react";
-import {
-  Alert,
-  GestureResponderEvent,
-  StyleSheet,
-  TouchableNativeFeedbackProps,
-  View,
-} from "react-native";
-import { fontFamily as ff, colorsPalette as cp } from "../../constants";
-import { Touchable, Button } from "../atom";
+import { StyleSheet, TouchableNativeFeedbackProps, View } from "react-native";
+import { colorsPalette as cp, fontFamily as ff } from "../../constants";
+import { Button } from "../atom";
 
 interface FloatButtonProps {
   touchableProps?: TouchableNativeFeedbackProps;
@@ -40,16 +34,6 @@ const FloatButton: FC<PropsWithChildren<FloatButtonProps>> = ({
       >
         {children}
       </Button>
-      {/* <Touchable
-        onPress={onPress}
-        {...touchableProps}
-        style={[buttonStyle, s.container]}
-        width={size}
-        height={size}
-        isRound={true}
-      >
-        {children}
-      </Touchable> */}
     </View>
   );
 };

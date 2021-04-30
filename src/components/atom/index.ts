@@ -1,7 +1,6 @@
 import AppCanvas from "./AppCanvas";
 import Button from "./Button";
 import TextField from "./TextField";
-import Touchable from "./Touchable";
 import TextItem from "./TextItem";
 import Gap from "./Gap";
 import ImgPreview from "./ImgPreview";
@@ -13,7 +12,6 @@ import LoadingButton from "./LoadingButton";
 export {
   AppCanvas,
   Button,
-  Touchable,
   TextField,
   TextItem,
   Gap,

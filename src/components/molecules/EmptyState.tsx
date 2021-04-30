@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { EmptyIcon, Plus } from "../../../assets";
 import { spacing as sp, strings as str } from "../../constants";
-import { Gap, TextItem, Touchable, Button } from "../atom";
+import { Button, Gap, TextItem } from "../atom";
 const { width, height } = Dimensions.get("screen");
 
 interface EmptyStateProps {
@@ -56,18 +56,6 @@ const EmptyState: FC<EmptyStateProps> = ({
           )}
         </View>
       </Button>
-      {/* <Touchable vertical={sp.s} horizontal={sp.xxxm} onPress={onPress}>
-        <View style={s.rowCont}>
-          <TextItem type="defaultW">{buttonText}</TextItem>
-
-          {withIcon && (
-            <>
-              <Gap horizontal={sp.s} />
-              {addIcon}
-            </>
-          )}
-        </View>
-      </Touchable> */}
     </View>
   );
 };
