@@ -1,10 +1,8 @@
 import { CompositeNavigationProp, useRoute } from "@react-navigation/core";
 import { RouteProp } from "@react-navigation/native";
-import axios from "axios";
 import React, { FC, ReactNode, useCallback, useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, Keyboard, StyleSheet, View } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import api from "../api";
 import {
   AppCanvas,
   FormContainer,
@@ -23,6 +21,11 @@ import {
 } from "../constants";
 import { FancyTypes } from "../constants/fancy-states";
 import StackParamsList from "../constants/screen-params";
+import {
+  createProductApi,
+  deleteProductApi,
+  updateProductApi,
+} from "../service";
 
 const { width, height } = Dimensions.get("screen");
 interface EditingProps {
@@ -111,10 +114,8 @@ const Editing: FC<EditingProps> = () => {
     dataSend.append("barcode", barcode);
     dataSend.append("product_image", imgFile);
     try {
-      await axios.post(`${api.product.postProduct}`, dataSend, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
+      await createProductApi({
+        dataSend,
       });
       setFancyBarState({
         visible: true,
@@ -141,9 +142,7 @@ const Editing: FC<EditingProps> = () => {
       barcode: detail?.barcode,
     };
     try {
-      const {
-        data: { isSuccess },
-      } = await axios.post(`${api.product.deleteProduct}`, dataSend);
+      const { isSuccess } = await deleteProductApi({ dataSend });
       setisDeleteLoading(false);
       if (isSuccess) {
         setFancyBarState({
@@ -181,11 +180,7 @@ const Editing: FC<EditingProps> = () => {
     if (imgFile.hasOwnProperty("type"))
       dataSend.append("product_image", imgFile);
     try {
-      await axios.post(`${api.product.updateProduct}`, dataSend, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      });
+      await updateProductApi({ dataSend });
       setFancyBarState({
         visible: true,
         type: fancyType.success,
@@ -252,6 +247,7 @@ const Editing: FC<EditingProps> = () => {
     );
 
   const _editing = () => {
+    Keyboard.dismiss();
     isEditing ? _updateProduct() : _addProduct();
   };
 

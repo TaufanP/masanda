@@ -30,6 +30,7 @@ import {
 } from "../constants";
 import { MainProduct } from "../constants/types";
 import { myCallback, myMemo } from "../hooks";
+import { getProductsApi, searchProductsApi } from "../service";
 
 interface HomeProps {
   navigation: CompositeNavigationProp<any, any>;
@@ -101,8 +102,8 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     bottomSheet();
   };
 
-  const _getProductsCall = ({ data = [], is_success, error }: any) => {
-    if (is_success) {
+  const _getProductsCall = ({ data = [], isSuccess, error }: any) => {
+    if (isSuccess) {
       setProducts(data);
       setIsData(true);
       setIsLoading(false);
@@ -130,9 +131,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     setIsData(false);
     const dataSend = { keyword, ...sortParam };
     try {
-      const {
-        data: { data },
-      } = await axios.post(`${api.product.searchProduct}`, dataSend);
+      const { data } = await searchProductsApi({ dataSend });
       setProducts(data);
       setIsData(true);
       setIsLoading(false);
@@ -143,26 +142,17 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     }
   };
 
-  const _getProducts = () => {
+  const _getProducts = async () => {
     setIsLoading(true);
     setIsData(false);
-    return new Promise(async (resolve, reject) => {
-      try {
-        const {
-          data: { data },
-        } = await axios.get(`${api.product.getProducts}`);
-        resolve({ is_success: true, data, error: null });
-      } catch (error) {
-        reject({ is_success: false, data: [], error });
-      }
-    });
+    await getProductsApi()
+      .then((res) => _getProductsCall(res))
+      .catch((e) => _getProductsCall(e));
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
-    _getProducts()
-      .then((e) => _getProductsCall(e))
-      .catch((e) => _getProductsCall(e));
+    _getProducts();
   };
 
   const refreshControl = <RefreshControl {...{ refreshing, onRefresh }} />;
@@ -170,9 +160,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   useEffect(() => {
     let isSubscribed = true;
     if (isSubscribed) {
-      _getProducts()
-        .then((e) => _getProductsCall(e))
-        .catch((e) => _getProductsCall(e));
+      _getProducts();
     }
     return () => {
       isSubscribed = false;
