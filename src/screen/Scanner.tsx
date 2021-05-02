@@ -5,8 +5,8 @@ import {
   useRoute,
 } from "@react-navigation/core";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import React, { FC, useCallback, useRef, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import { Dimensions, StyleSheet, View, PermissionsAndroid } from "react-native";
 import {
   AppCanvas,
   DetailSheet,
@@ -22,6 +22,7 @@ import {
 import StackParamsList from "../constants/screen-params";
 import { MainProduct } from "../constants/types";
 import { myCallback, myMemo } from "../hooks";
+import { requestCameraPermission } from "../config";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -111,6 +112,10 @@ const Scanner: FC<ScannerProps> = ({ navigation }) => {
       setVisible(true);
     }
   };
+
+  useEffect(() => {
+    requestCameraPermission();
+  }, []);
 
   return (
     <>

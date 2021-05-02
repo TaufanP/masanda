@@ -2,6 +2,7 @@ import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC, memo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { CloseX, Scan } from "../../../assets";
+import { requestCameraPermission } from "../../config";
 import {
   colorsPalette as cp,
   routesName as r,
@@ -20,8 +21,6 @@ interface SearchHeader {
   setter: any;
   extraAction: any;
   keyword: string;
-  sortAction: any;
-  currentSort: any;
   sortData: any;
   selectedField?: number;
   settingField?: any;
@@ -34,15 +33,16 @@ const SearchHeader: FC<SearchHeader> = ({
   setter,
   extraAction,
   keyword,
-  sortAction,
-  currentSort,
   sortData,
   selectedField,
   settingField,
 }) => {
   const s = styles();
-  const [taps, setTaps] = useState<any>(0);
   const styleInput = myMemo({ marginRight: sp.s });
+  const scanPress = async () => {
+    const isGranted = await requestCameraPermission();
+    if (isGranted) navigation.navigate(r.SCANNER, { products: searchData });
+  };
 
   return (
     <View style={s.container}>
@@ -59,14 +59,7 @@ const SearchHeader: FC<SearchHeader> = ({
           extraAction={extraAction}
           defaultValue={keyword}
         />
-        <Button
-          width={40}
-          height={40}
-          type="Fixed"
-          onPress={() =>
-            navigation.navigate(r.SCANNER, { products: searchData })
-          }
-        >
+        <Button width={40} height={40} type="Fixed" onPress={scanPress}>
           <Scan width={24} height={24} fill={"#FFF"} />
         </Button>
       </View>
@@ -87,25 +80,6 @@ const SearchHeader: FC<SearchHeader> = ({
           />
         ))}
       </ScrollView>
-      {/* <View style={s.section}>
-        <TouchableText
-          onPress={() => onPressSort("product_name")}
-          buttonStyle={{ marginRight: sp.xm }}
-          bg={false}
-          isRound={true}
-          type={textColorName}
-        >
-          {arrowName}
-        </TouchableText>
-        <TouchableText
-          onPress={() => onPressSort("price")}
-          bg={false}
-          isRound={true}
-          type={textColorPrice}
-        >
-          {arrowPrice}
-        </TouchableText>
-      </View> */}
     </View>
   );
 };

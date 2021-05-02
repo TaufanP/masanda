@@ -13,6 +13,7 @@ import {
   TextField,
   TouchableText,
 } from "../components";
+import { requestCameraPermission } from "../config";
 import {
   colorsPalette as cp,
   fancyState as fan,
@@ -216,20 +217,23 @@ const Editing: FC<EditingProps> = () => {
     }
   };
 
-  const _onPressCamera = () =>
-    launchCamera(
-      {
-        mediaType: "photo",
-      },
-      (response) => {
-        setVisible(false);
-        setImgFile({
-          name: response.fileName,
-          type: response.type,
-          uri: response.uri,
-        });
-      }
-    );
+  const _onPressCamera = async () => {
+    const isGranted = await requestCameraPermission();
+    if (isGranted)
+      launchCamera(
+        {
+          mediaType: "photo",
+        },
+        (response) => {
+          setVisible(false);
+          setImgFile({
+            name: response.fileName,
+            type: response.type,
+            uri: response.uri,
+          });
+        }
+      );
+  };
 
   const _onPressLibrary = () =>
     launchImageLibrary(

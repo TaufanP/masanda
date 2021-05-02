@@ -1,26 +1,24 @@
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { CompositeNavigationProp } from "@react-navigation/core";
-import axios from "axios";
 import React, {
   FC,
-  useEffect,
-  useState,
-  useRef,
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
+  useState,
 } from "react";
-import { FlatList, StyleSheet, View, RefreshControl } from "react-native";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import { Plus } from "../../assets";
-import api from "../api";
 import {
   AppCanvas,
+  DetailSheet,
   EmptyState,
   FloatButton,
+  OverlayArea,
   ProductTile,
   SearchHeader,
-  DetailSheet,
-  OverlayArea,
 } from "../components";
 import {
   routesName as r,
@@ -72,7 +70,6 @@ const Home: FC<HomeProps> = ({ navigation }) => {
 
   const snapPoints = myMemo(["0%", "60%", "100%"]);
   const searchData = useMemo(() => products, [products]);
-  const currentSort = useMemo(() => sortParam, [sortParam]);
 
   const handleSheetChange = useCallback((index) => {
     if (index == 0) {
@@ -93,10 +90,6 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     sortParam,
   ]);
   const extraAction = useCallback(() => clearState(), []);
-  const sortAction = useCallback(
-    ({ type, order }: any) => settingSortParam({ type, order }),
-    [sortParam]
-  );
   const overlayAreaPress = useCallback(() => handleClosePress(), []);
   const onPressRight = useCallback(() => handleClosePress(), []);
   const onPressLeft = useCallback(() => {
@@ -106,15 +99,19 @@ const Home: FC<HomeProps> = ({ navigation }) => {
 
   const settingField = useCallback(
     ({ id, value }) => {
-      setSelectedField(id);
+      setSelectedField((current) => {
+        if (current == id) return 0;
+        return id;
+      });
+      const finalValue = selectedField == id ? 0 : value;
       const paramsObj =
-        value == 1
+        finalValue == 1
           ? { field: "product_name", order: 1 }
-          : value == 2
+          : finalValue == 2
           ? { field: "product_name", order: -1 }
-          : value == 3
+          : finalValue == 3
           ? { field: "price", order: 1 }
-          : value == 4
+          : finalValue == 4
           ? { field: "price", order: -1 }
           : { field: "", order: 0 };
       setSortParam(paramsObj);
@@ -144,11 +141,6 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     onRefresh();
     setKeyword("");
     setSortParam({ field: "", order: 1 });
-  };
-
-  const settingSortParam = ({ type, order }: any) => {
-    setSortParam({ field: type, order });
-    return;
   };
 
   const searchProducts = async () => {
@@ -223,8 +215,6 @@ const Home: FC<HomeProps> = ({ navigation }) => {
             submitAction,
             extraAction,
             keyword,
-            sortAction,
-            currentSort,
             sortData,
             selectedField,
             settingField,
