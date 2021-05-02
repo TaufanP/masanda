@@ -30,6 +30,9 @@ interface TouchableTextProps {
   bordered?: boolean;
   isRound?: boolean;
   buttonType?: string;
+  vertical?: number;
+  horizontal?: number;
+  borderRadius?: number;
 }
 
 interface StyleProps {
@@ -38,6 +41,8 @@ interface StyleProps {
   isCenter?: boolean;
   bordered?: boolean;
   isRound?: boolean;
+  vertical?: number;
+  horizontal?: number;
 }
 
 const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
@@ -59,8 +64,19 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
   bordered = false,
   isRound = false,
   buttonType = "Padding",
+  vertical,
+  horizontal,
+  borderRadius,
 }) => {
-  const s = styles({ bg, backgroundColor, isCenter, bordered, isRound });
+  const s = styles({
+    bg,
+    backgroundColor,
+    isCenter,
+    bordered,
+    isRound,
+    vertical,
+    horizontal,
+  });
   return (
     <Button
       {...touchableProps}
@@ -71,10 +87,11 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
       rippleColor={rippleColor}
       backgroundColor={backgroundColor}
       type={buttonType}
-      vertical={4}
-      horizontal={8}
+      vertical={vertical}
+      horizontal={horizontal}
       width={width}
       height={height}
+      borderRadius={borderRadius}
     >
       <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
         {children}
@@ -89,12 +106,14 @@ const styles = ({
   isCenter,
   bordered,
   isRound,
+  vertical,
+  horizontal,
 }: StyleProps) =>
   StyleSheet.create({
     text: {
       fontFamily: ff.quicksandMedium,
-      paddingVertical: bg ? sp.xxs : 0,
-      paddingHorizontal: bg ? sp.s : 0,
+      paddingVertical: vertical !== undefined ? vertical : bg ? sp.xxs : 0,
+      paddingHorizontal: horizontal !== undefined ? horizontal : bg ? sp.s : 0,
       color: bordered ? backgroundColor : bg ? cp.white : cp.text1,
       justifyContent: bg ? "center" : isCenter ? "center" : "flex-start",
       alignItems: bg ? "center" : isCenter ? "center" : "flex-start",

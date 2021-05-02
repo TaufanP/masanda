@@ -21,7 +21,6 @@ interface ButtonProps {
   height?: number | string;
   vertical?: number;
   horizontal?: number;
-  isFlex?: boolean;
   backgroundColor?: string;
   hitslop?: HitSlopProps;
   isLoading?: boolean;
@@ -30,6 +29,7 @@ interface ButtonProps {
   bordered?: boolean;
   isRound?: boolean;
   type?: string;
+  borderRadius?: number;
 }
 
 interface StyleProps {
@@ -38,10 +38,10 @@ interface StyleProps {
   vertical?: number;
   horizontal?: number;
   style?: Object;
-  isFlex: boolean;
   backgroundColor?: string;
   bordered?: boolean;
   isRound?: boolean;
+  borderRadius?: number;
 }
 
 const Button: FC<
@@ -50,7 +50,6 @@ const Button: FC<
   children,
   width = 40,
   height = 40,
-  isFlex = true,
   vertical = 0,
   horizontal = 0,
   style,
@@ -63,6 +62,7 @@ const Button: FC<
   bordered = false,
   isRound = false,
   type = "100",
+  borderRadius = 8,
   ...props
 }) => {
   const s: { [key: string]: any } = styles({
@@ -70,10 +70,10 @@ const Button: FC<
     height,
     vertical,
     horizontal,
-    isFlex,
     backgroundColor,
     bordered,
     isRound,
+    borderRadius,
   });
 
   return (
@@ -105,10 +105,10 @@ const styles = ({
   height,
   vertical,
   horizontal,
-  isFlex,
   backgroundColor = cp.purple2,
   bordered,
   isRound,
+  borderRadius,
 }: StyleProps) =>
   StyleSheet.create({
     containerSize100: {
@@ -124,12 +124,16 @@ const styles = ({
       paddingVertical: vertical,
       paddingHorizontal: horizontal,
     },
-    parent: { borderRadius: 8, overflow: "hidden" },
+    containerSizeAuto: {
+      width: "auto",
+      height: "auto",
+    },
+    parent: { borderRadius, overflow: "hidden" },
     container: {
       backgroundColor: bordered ? "transparent" : backgroundColor,
       justifyContent: "center",
       alignItems: "center",
-      borderRadius: 8,
+      borderRadius,
       borderWidth: isRound ? 0 : 1,
       borderColor: backgroundColor,
     },

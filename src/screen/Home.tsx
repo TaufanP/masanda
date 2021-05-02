@@ -32,6 +32,12 @@ import { MainProduct } from "../constants/types";
 import { myCallback, myMemo } from "../hooks";
 import { getProductsApi, searchProductsApi } from "../service";
 
+const sortData = [
+  { id: 534, label: "A-Z", value: 1 },
+  { id: 549, label: "Z-A", value: 2 },
+  { id: 408, label: "Terendah", value: 3 },
+  { id: 598, label: "Tertinggi", value: 4 },
+];
 interface HomeProps {
   navigation: CompositeNavigationProp<any, any>;
 }
@@ -53,6 +59,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   const [isSheet, setIsSheet] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>("");
+  const [selectedField, setSelectedField] = useState<number>(0);
   const [sortParam, setSortParam] = useState({
     field: "",
     order: 1,
@@ -96,6 +103,24 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     handleClosePress();
     navigation.navigate(r.EDITING, { detail, isEditing: true });
   }, [detail]);
+
+  const settingField = useCallback(
+    ({ id, value }) => {
+      setSelectedField(id);
+      const paramsObj =
+        value == 1
+          ? { field: "product_name", order: 1 }
+          : value == 2
+          ? { field: "product_name", order: -1 }
+          : value == 3
+          ? { field: "price", order: 1 }
+          : value == 4
+          ? { field: "price", order: -1 }
+          : { field: "", order: 0 };
+      setSortParam(paramsObj);
+    },
+    [sortParam]
+  );
 
   const detailSetter = (item: MainProduct) => {
     setDetail(item);
@@ -200,6 +225,9 @@ const Home: FC<HomeProps> = ({ navigation }) => {
             keyword,
             sortAction,
             currentSort,
+            sortData,
+            selectedField,
+            settingField,
           }}
         />
         <SkeletonContent

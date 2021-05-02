@@ -1,6 +1,6 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC, memo, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { CloseX, Scan } from "../../../assets";
 import {
   colorsPalette as cp,
@@ -11,7 +11,7 @@ import {
 import { MainProduct } from "../../constants/types";
 import { myMemo } from "../../hooks";
 import { Button, TextField } from "../atom/";
-import { TouchableText } from "../molecules";
+import { TouchableText, SorterButton } from "../molecules";
 
 interface SearchHeader {
   navigation: CompositeNavigationProp<any, any>;
@@ -22,6 +22,9 @@ interface SearchHeader {
   keyword: string;
   sortAction: any;
   currentSort: any;
+  sortData: any;
+  selectedField?: number;
+  settingField?: any;
 }
 
 const SearchHeader: FC<SearchHeader> = ({
@@ -33,46 +36,13 @@ const SearchHeader: FC<SearchHeader> = ({
   keyword,
   sortAction,
   currentSort,
+  sortData,
+  selectedField,
+  settingField,
 }) => {
   const s = styles();
   const [taps, setTaps] = useState<any>(0);
   const styleInput = myMemo({ marginRight: sp.s });
-
-  const textColorName =
-    currentSort.field == "product_name" ? "primeColor" : "defaultColor";
-  const textColorPrice =
-    currentSort.field == "price" ? "primeColor" : "defaultColor";
-
-  const arrowPrice =
-    currentSort.field == "price" && currentSort.order == 1
-      ? "Terendah "
-      : currentSort.field == "price" && currentSort.order == -1
-      ? "Tertinggi "
-      : "Harga ";
-  const arrowName =
-    currentSort.field == "product_name" && currentSort.order == 1
-      ? "A-Z "
-      : currentSort.field == "product_name" && currentSort.order == -1
-      ? "Z-A "
-      : "Nama ";
-
-  const onPressSort = (type: string) => {
-    if (taps == 0) {
-      sortAction({ type: "", order: 1 });
-      setTaps(1);
-      return;
-    }
-    if (taps == 1) {
-      sortAction({ type, order: 1 });
-      setTaps(2);
-      return;
-    }
-    if (taps == 2) {
-      sortAction({ type, order: -1 });
-      setTaps(0);
-      return;
-    }
-  };
 
   return (
     <View style={s.container}>
@@ -100,7 +70,24 @@ const SearchHeader: FC<SearchHeader> = ({
           <Scan width={24} height={24} fill={"#FFF"} />
         </Button>
       </View>
-      <View style={s.section}>
+      <ScrollView
+        contentContainerStyle={[
+          s.section,
+          {
+            marginTop: sp.xxxs,
+          },
+        ]}
+      >
+        {sortData.map((item: any) => (
+          <SorterButton
+            label={item.label}
+            key={item.id}
+            bg={item.id == selectedField}
+            onPress={() => settingField({ id: item.id, value: item.value })}
+          />
+        ))}
+      </ScrollView>
+      {/* <View style={s.section}>
         <TouchableText
           onPress={() => onPressSort("product_name")}
           buttonStyle={{ marginRight: sp.xm }}
@@ -118,7 +105,7 @@ const SearchHeader: FC<SearchHeader> = ({
         >
           {arrowPrice}
         </TouchableText>
-      </View>
+      </View> */}
     </View>
   );
 };
