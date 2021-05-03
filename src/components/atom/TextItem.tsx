@@ -1,10 +1,10 @@
 import React, { FC, memo, PropsWithChildren } from "react";
 import { StyleSheet, Text, TextProps, View } from "react-native";
 import {
-  fontFamily as ff,
-  textSize as ts,
   colorsPalette as cp,
+  fontFamily as ff,
   spacing as sp,
+  textSize as ts,
 } from "../../constants";
 
 interface TextItemProps {

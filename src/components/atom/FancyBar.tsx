@@ -1,10 +1,10 @@
 import React, { FC, memo, useEffect } from "react";
-import { Animated, Dimensions, StyleSheet, Text } from "react-native";
+import { Animated, Dimensions, StyleSheet } from "react-native";
 import { TextItem } from ".";
 import {
   colorsPalette as cp,
-  spacing as sp,
   fancyState as fan,
+  spacing as sp,
 } from "../../constants";
 import { FancyTypes } from "../../constants/fancy-states";
 import { TouchableText } from "../molecules";

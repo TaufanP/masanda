@@ -1,6 +1,5 @@
-import React, { FC, memo, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren } from "react";
 import {
-  ActivityIndicator,
   StyleSheet,
   TouchableNativeFeedback,
   TouchableNativeFeedbackProps,
@@ -89,9 +88,6 @@ const Button: FC<
           {isLoading ? (
             <LoadingButton color={bordered ? backgroundColor : loadingColor} />
           ) : (
-            // <ActivityIndicator
-            //   color={bordered ? backgroundColor : loadingColor}
-            // />
             children
           )}
         </View>

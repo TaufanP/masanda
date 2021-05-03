@@ -1,12 +1,10 @@
 import React, { FC, memo } from "react";
-import { Dimensions, Image, StyleSheet, View, Text } from "react-native";
-import { DummyProduct, PlusImgField } from "../../../assets";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { PlusImgField } from "../../../assets";
 import {
   colorsPalette as cp,
-  fontFamily as ff,
-  textSize as ts,
-  strings as str,
   spacing as sp,
+  strings as str,
 } from "../../constants";
 import TextItem from "./TextItem";
 

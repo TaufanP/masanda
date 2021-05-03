@@ -1,11 +1,5 @@
 import React, { FC, useEffect } from "react";
-import {
-  Animated,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, Dimensions, StyleSheet, View } from "react-native";
 
 const { width, height } = Dimensions.get("screen");
 

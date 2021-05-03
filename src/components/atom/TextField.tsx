@@ -1,17 +1,17 @@
-import React, { FC, useState, memo, ReactNode } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import {
   StyleSheet,
   TextInput,
   TextInputProps,
-  View,
   TouchableOpacity,
+  View,
 } from "react-native";
+import { Scan } from "../../../assets";
 import {
   colorsPalette as cp,
   fontFamily as ff,
   spacing as sp,
 } from "../../constants";
-import { Scan } from "../../../assets";
 
 interface TextFieldProps {
   isError?: boolean;

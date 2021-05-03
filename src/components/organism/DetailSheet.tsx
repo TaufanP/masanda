@@ -1,17 +1,16 @@
 import React, { FC } from "react";
-import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
-import { TextItem } from "../atom";
-import { TouchableText } from "../molecules";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { DummyProduct } from "../../../assets";
 import {
-  spacing as sp,
   colorsPalette as cp,
+  spacing as sp,
   strings as str,
 } from "../../constants";
 import { MainProduct } from "../../constants/types";
-import { DummyProduct } from "../../../assets";
+import { TextItem } from "../atom";
+import { TouchableText } from "../molecules";
 
 const { width, height } = Dimensions.get("screen");
-const { alert } = Alert;
 
 interface DetailSheetProps {
   onPressRight?: any;

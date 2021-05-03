@@ -1,6 +1,5 @@
 import React, { FC, memo } from "react";
 import {
-  Alert,
   Dimensions,
   Image,
   StyleSheet,

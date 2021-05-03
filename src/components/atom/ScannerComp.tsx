@@ -1,20 +1,14 @@
-import React, { FC, PropsWithChildren, memo, useState } from "react";
-import { Dimensions, View, StyleSheet } from "react-native";
-import { colorsPalette as cp } from "../../constants";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import React, { FC, memo, PropsWithChildren, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { colorsPalette as cp } from "../../constants";
 const { width, height } = Dimensions.get("screen");
 
 interface ScannerProps {
   result: any;
-  setIsUse?: any;
 }
 
-interface StyleProps {}
-
-const ScannerComp: FC<PropsWithChildren<ScannerProps>> = ({
-  result,
-  setIsUse,
-}) => {
+const ScannerComp: FC<PropsWithChildren<ScannerProps>> = ({ result }) => {
   const [scanned, setScanned] = useState<boolean>(false);
   const s = styles();
   const handleBarCodeScanned = ({ type, data }: any) => {

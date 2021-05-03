@@ -96,19 +96,11 @@ const StaticBottomSheet: FC<StaticBottomSheetProps> = ({
     <Animated.View
       style={[s.emptyCont, { transform: [{ translateY: fadeAnim }] }]}
     >
-      <Animated.View
-        style={{
-          width,
-          height,
-          backgroundColor: "#0008",
-          position: "absolute",
-          opacity,
-        }}
-      >
+      <Animated.View style={[s.blackBackground, { opacity }]}>
         <TouchableOpacity
           onPress={() => setVisible(false)}
           activeOpacity={1}
-          style={{ width: "100%", height: "100%" }}
+          style={s.touchArea}
         />
       </Animated.View>
       <View style={s.contentCont}>
@@ -121,10 +113,7 @@ const StaticBottomSheet: FC<StaticBottomSheetProps> = ({
         </View>
         <View style={s.buttonsCont}>
           {action ? (
-            <TouchableText onPress={onPress}>
-              {/* <Text style={[s.buttonText, { color: "#FFF" }]}>{mainLabel}</Text> */}
-              {mainLabel}
-            </TouchableText>
+            <TouchableText onPress={onPress}>{mainLabel}</TouchableText>
           ) : (
             <>
               <View style={[s.buttonCont, s.leftButton]}>
@@ -157,6 +146,13 @@ const StaticBottomSheet: FC<StaticBottomSheetProps> = ({
 
 const styles = () =>
   StyleSheet.create({
+    touchArea: { width: "100%", height: "100%" },
+    blackBackground: {
+      width,
+      height,
+      backgroundColor: "#0008",
+      position: "absolute",
+    },
     bgScreen: { width, height, backgroundColor: "#000" },
     buttonsCont: {
       flexDirection: "row",

@@ -1,5 +1,5 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
-import React, { FC, memo, useState } from "react";
+import React, { FC, memo } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { CloseX, Scan } from "../../../assets";
 import { requestCameraPermission } from "../../config";
@@ -12,7 +12,7 @@ import {
 import { MainProduct } from "../../constants/types";
 import { myMemo } from "../../hooks";
 import { Button, TextField } from "../atom/";
-import { TouchableText, SorterButton } from "../molecules";
+import { SorterButton } from "../molecules";
 
 interface SearchHeader {
   navigation: CompositeNavigationProp<any, any>;

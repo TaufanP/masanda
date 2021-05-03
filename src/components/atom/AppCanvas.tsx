@@ -1,6 +1,6 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC, PropsWithChildren } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { colorsPalette as cp } from "../../constants";
 import { FancyTypes } from "../../constants/fancy-states";
 import FancyBar from "./FancyBar";
