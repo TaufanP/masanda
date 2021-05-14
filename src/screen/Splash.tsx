@@ -1,9 +1,9 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StatusBar, View, Text, StyleSheet } from "react-native";
 // import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { routesName as r } from "../constants";
+import { routesName as r, colorsPalette as cp } from "../constants";
 
 interface SplashProps {
   navigation: CompositeNavigationProp<any, any>;
@@ -23,6 +23,7 @@ const Splash: FC<SplashProps> = ({ navigation }) => {
 
   return (
     <View style={s.container}>
+      <StatusBar backgroundColor={cp.purple1} />
       <View>
         <Text style={s.tokoText}>Toko</Text>
         <Text style={s.masandaText}>Masanda</Text>
@@ -42,7 +43,7 @@ const styles = () =>
     },
     tokoText: { color: "#FFF", fontSize: 32 },
     container: {
-      backgroundColor: "purple",
+      backgroundColor: cp.purple1,
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
