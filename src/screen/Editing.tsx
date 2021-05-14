@@ -305,6 +305,7 @@ const Editing: FC<EditingProps> = () => {
           setter={_setter}
           optKey="price"
           defaultValue={dataForm.price.toString()}
+          maxLength={8}
         />
         <TouchableText
           buttonStyle={{ height: 50 }}

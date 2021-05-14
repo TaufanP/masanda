@@ -92,6 +92,7 @@ const TouchableText: FC<PropsWithChildren<TouchableTextProps>> = ({
       width={width}
       height={height}
       borderRadius={borderRadius}
+      bordered={bordered}
     >
       <TextItem {...textProps} style={[s.text, textStyle]} type={type}>
         {children}

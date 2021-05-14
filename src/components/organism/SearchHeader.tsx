@@ -40,7 +40,7 @@ const SearchHeader: FC<SearchHeader> = ({
   const s = styles();
   const styleInput = myMemo({ marginRight: sp.s });
   const scanPress = async () => {
-    const isGranted = await requestCameraPermission();
+    const { isGranted } = await requestCameraPermission();
     if (isGranted) navigation.navigate(r.SCANNER, { products: searchData });
   };
 

@@ -1,6 +1,6 @@
 import { CompositeNavigationProp } from "@react-navigation/core";
 import React, { FC, PropsWithChildren } from "react";
-import { StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { colorsPalette as cp } from "../../constants";
 import { FancyTypes } from "../../constants/fancy-states";
 import FancyBar from "./FancyBar";
@@ -19,6 +19,7 @@ const AppCanvas: FC<PropsWithChildren<AppCanvas>> = ({
   const s = styles();
   return (
     <View style={s.container}>
+      <StatusBar backgroundColor={cp.white} barStyle="dark-content" />
       {children}
       <FancyBar {...{ fancyBarState, setFancyBarState }} />
     </View>
