@@ -67,11 +67,7 @@ const updateProductApi = ({ dataSend }: ApiProps) => {
     try {
       const {
         data: { data, isSuccess, error, message },
-      } = await axios.post(
-        `${api.product.updateProduct}`,
-        dataSend,
-        formDataConfig
-      );
+      } = await axios.put(`${api.product.base}`, dataSend, formDataConfig);
       resolve({ isSuccess, data, error, message });
     } catch (error) {
       reject({
