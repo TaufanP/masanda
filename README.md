@@ -67,7 +67,7 @@ yarn install
 ```
 Create .env file on project root, containing one variable:
 ```
-baseUrl = YOUR_ENDPOINT_URL
+baseUrl=YOUR_ENDPOINT_URL
 ```
 [Run](https://reactnative.dev/docs/running-on-device) the application on your device
 
