@@ -28,12 +28,7 @@ import {
 } from "../constants";
 import { MainProduct } from "../constants/types";
 import { myCallback, myMemo } from "../hooks";
-import {
-  fetchGetProducts,
-  fetchSearchProducts,
-  getProductsApi,
-  searchProductsApi,
-} from "../service";
+import { getProductsApi, searchProductsApi } from "../service";
 
 const sortData = [
   { id: 534, label: "A-Z", value: 1 },
@@ -47,6 +42,7 @@ interface HomeProps {
 
 const Home: FC<HomeProps> = ({ navigation }) => {
   const s = styles();
+  const renderCount = React.useRef(0).current++;
 
   const [products, setProducts] = useState<MainProduct[]>([]);
   const [detail, setDetail] = useState<MainProduct>({
@@ -73,7 +69,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
 
   const sheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = myMemo(["0%", "60%", "100%"]);
+  const snapPoints = myMemo(["-50%", "60%", "100%"]);
   const searchData = useMemo(() => products, [products]);
 
   const handleSheetChange = useCallback((index) => {
@@ -129,7 +125,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     bottomSheet();
   };
 
-  const _getProductsCall = ({ data = [], isSuccess, error }: any) => {
+  const getProductsCall = ({ data = [], isSuccess, error }: any) => {
     if (isSuccess) {
       setProducts(data);
       setIsData(true);
@@ -137,7 +133,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     } else {
       setIsData(false);
       setIsLoading(false);
-      console.log("Home, _getProducts():", error);
+      console.log("Home, getProducts():", error);
     }
     setRefreshing(false);
   };
@@ -146,34 +142,37 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     onRefresh();
     setKeyword("");
     setSortParam({ field: "", order: 1 });
+    setSelectedField(0);
   };
 
   const searchProducts = async () => {
-    setIsLoading(true);
-    setIsData(false);
-    try {
-      const { data } = await fetchSearchProducts({ keyword, ...sortParam });
-      setProducts(data);
-      setIsData(true);
-      setIsLoading(false);
-    } catch (error) {
-      console.log("Home, searchProducts", { error });
-      setIsData(true);
-      setIsLoading(false);
+    if (renderCount > 1) {
+      setIsLoading(true);
+      setIsData(false);
+      try {
+        const { data } = await searchProductsApi({ keyword, ...sortParam });
+        setProducts(data);
+        setIsData(true);
+        setIsLoading(false);
+      } catch (error) {
+        console.log("Home, searchProducts", { error });
+        setIsData(true);
+        setIsLoading(false);
+      }
     }
   };
 
-  const _getProducts = async () => {
+  const getProducts = async () => {
     setIsLoading(true);
     setIsData(false);
-    await fetchGetProducts()
-      .then((res) => _getProductsCall(res))
-      .catch((e) => _getProductsCall(e));
+    await getProductsApi()
+      .then((res) => getProductsCall(res))
+      .catch((e) => getProductsCall(e));
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
-    _getProducts();
+    getProducts();
   };
 
   const refreshControl = <RefreshControl {...{ refreshing, onRefresh }} />;
@@ -181,7 +180,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   useEffect(() => {
     let isSubscribed = true;
     if (isSubscribed) {
-      _getProducts();
+      getProducts();
     }
     return () => {
       isSubscribed = false;

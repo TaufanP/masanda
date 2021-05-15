@@ -139,11 +139,10 @@ const Editing: FC<EditingProps> = () => {
 
   const _deleteProduct = async () => {
     setisDeleteLoading(true);
-    const dataSend = {
-      barcode: detail?.barcode,
-    };
     try {
-      const { isSuccess } = await deleteProductApi({ dataSend });
+      const { isSuccess } = await deleteProductApi({
+        barcode: detail?.barcode,
+      });
       setisDeleteLoading(false);
       if (isSuccess) {
         setFancyBarState({
