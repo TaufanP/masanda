@@ -53,7 +53,23 @@ and immediately display the details.
 <!-- GETTING STARTED -->
 ## Getting Started <a name="getting-started"></a>
 ### Prerequisites <a name="prerequisites"></a>
+* [Node.js](https://nodejs.org/en/download/) (npm included)
+* [Yarn](https://classic.yarnpkg.com/en/docs/getting-started)
+
 ### Installation <a name="installation"></a>
+Clone this [repo](https://github.com/TaufanP/masanda) then open the directory with your terminal
+```
+cd masanda
+```
+Install all the packages
+```
+yarn install
+```
+Create .env file on project root, containing one variable:
+```
+baseUrl = YOUR_ENDPOINT_URL
+```
+[Run](https://reactnative.dev/docs/running-on-device) the application on your device
 
 <!-- DOWNLOAD -->
 ## Download <a name="download"></a>
@@ -65,7 +81,7 @@ Get the android release version [here](https://google.com).
 
 <!-- LICENSE -->
 ## License <a name="license"></a>
-Masanda is released under GNU License.
+Masanda is released under [GNU General Public License V3](https://github.com/TaufanP/masanda/blob/main/LICENSE).
 
 <!-- CONTACT -->
 ## Contact <a name="contact"></a>
