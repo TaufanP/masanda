@@ -34,3 +34,17 @@
 Came from a store owner found that it’s difficult for her employees to find a product price. They have to memorize and taking a note of it. Another challenges come when the employees are replaced. They have to start it all over again. Masanda Let the user to add a new or find an item quickly, it only needs name and price. The search feature is accessible by scanning product barcode
 and immediately display the details.
 </p>
+
+<!-- BACKGROUND -->
+## Features <a name="features"></a>
+* Profile creation with a single click
+* Support of 100 languages (even exotic ones like COBOL)
+* Detection of more than [1,000 libraries](https://github.com/sourcerer-io/awesome-libraries) in code with per-line statistics
+* Visual presentation your development experience
+* *Finally!* Summary of all repositories you've contributed to :tada:
+* Interesting facts about yourself
+
+Creating your profile is just the first step for us at Sourcerer. Some of the things on our roadmap include:
+* Engineers to follow and learn from
+* Technology and libraries you should know about
+* Projects that could use your help
