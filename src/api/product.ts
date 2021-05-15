@@ -1,7 +1,7 @@
 import url from "./baseUrl";
 
 const product = {
-  base: `${url}/products`,
+  base: `${url}/product`,
 };
 
 export default product;

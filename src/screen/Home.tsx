@@ -69,7 +69,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
 
   const sheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = myMemo(["0%", "60%", "100%"]);
+  const snapPoints = myMemo(["-50%", "60%", "100%"]);
   const searchData = useMemo(() => products, [products]);
 
   const handleSheetChange = useCallback((index) => {
@@ -142,6 +142,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
     onRefresh();
     setKeyword("");
     setSortParam({ field: "", order: 1 });
+    setSelectedField(0);
   };
 
   const searchProducts = async () => {
