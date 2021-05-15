@@ -28,7 +28,12 @@ import {
 } from "../constants";
 import { MainProduct } from "../constants/types";
 import { myCallback, myMemo } from "../hooks";
-import { getProductsApi, searchProductsApi } from "../service";
+import {
+  fetchGetProducts,
+  fetchSearchProducts,
+  getProductsApi,
+  searchProductsApi,
+} from "../service";
 
 const sortData = [
   { id: 534, label: "A-Z", value: 1 },
@@ -146,9 +151,8 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   const searchProducts = async () => {
     setIsLoading(true);
     setIsData(false);
-    const dataSend = { keyword, ...sortParam };
     try {
-      const { data } = await searchProductsApi({ dataSend });
+      const { data } = await fetchSearchProducts({ keyword, ...sortParam });
       setProducts(data);
       setIsData(true);
       setIsLoading(false);
@@ -162,7 +166,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   const _getProducts = async () => {
     setIsLoading(true);
     setIsData(false);
-    await getProductsApi()
+    await fetchGetProducts()
       .then((res) => _getProductsCall(res))
       .catch((e) => _getProductsCall(e));
   };

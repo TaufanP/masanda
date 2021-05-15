@@ -10,6 +10,12 @@ interface ApiProps {
   config?: any;
 }
 
+interface SearchProps {
+  keyword: string;
+  field: string;
+  order: number;
+}
+
 const formDataConfig = {
   headers: {
     "content-type": "multipart/form-data",
@@ -114,10 +120,50 @@ const updateProductApi = ({ dataSend }: ApiProps) => {
   });
 };
 
+const fetchGetProducts = () => {
+  return new Promise<ResultProps>(async (resolve, reject) => {
+    try {
+      const {
+        data: { data, isSuccess, error, message },
+      } = await axios.get(`${api.product.base}`);
+      resolve({ isSuccess, data, error, message });
+    } catch (error) {
+      reject({
+        isSuccess: false,
+        data: [],
+        error,
+        message: "Tidak dapat terhubung ke serveer",
+      });
+    }
+  });
+};
+
+const fetchSearchProducts = ({ keyword, field, order }: SearchProps) => {
+  return new Promise<ResultProps>(async (resolve, reject) => {
+    try {
+      const {
+        data: { data, isSuccess, error, message },
+      } = await axios.get(
+        `${api.product.base}?keyword=${keyword}&field=${field}&order=${order}`
+      );
+      resolve({ isSuccess, data, error, message });
+    } catch (error) {
+      reject({
+        isSuccess: false,
+        data: [],
+        error,
+        message: "Tidak dapat terhubung ke serveer",
+      });
+    }
+  });
+};
+
 export {
   getProductsApi,
   searchProductsApi,
   createProductApi,
   deleteProductApi,
   updateProductApi,
+  fetchGetProducts,
+  fetchSearchProducts,
 };
