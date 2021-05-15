@@ -23,8 +23,8 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Download](https://google.com)
-* [related](#related)
+* [Download](#download)
+* [Related Project](#related)
 * [License](#license)
 * [Contact](#contact)
 
@@ -35,16 +35,38 @@ Came from a store owner found that it’s difficult for her employees to find a 
 and immediately display the details.
 </p>
 
-<!-- BACKGROUND -->
+<!-- FEATURES -->
 ## Features <a name="features"></a>
-* Profile creation with a single click
-* Support of 100 languages (even exotic ones like COBOL)
-* Detection of more than [1,000 libraries](https://github.com/sourcerer-io/awesome-libraries) in code with per-line statistics
-* Visual presentation your development experience
-* *Finally!* Summary of all repositories you've contributed to :tada:
-* Interesting facts about yourself
+* **Simple List** display product name and price on homepage. Easily recognizes product by its image.
+* **Quick Sort List** quickly adjust product order by names and prices. It can be ordered in ascending or descending.
+* **Barcode Search** search matched barcode data and display the existing product or create a new one.
+* **Quick Sort List** display product detail with plus sized price text. Easy to read for long distance view while doing another task without holding the phone.
 
-Creating your profile is just the first step for us at Sourcerer. Some of the things on our roadmap include:
-* Engineers to follow and learn from
-* Technology and libraries you should know about
-* Projects that could use your help
+<!-- DEMO AND PREVIEW -->
+## Demo and Preview <a name="demo-preview"></a>
+### Search and Filter
+### Add New Item
+### Search Item with Barcode
+### Add New Item with Barcode Scanned
+### Autopick Barcode
+
+<!-- GETTING STARTED -->
+## Getting Started <a name="getting-started"></a>
+### Prerequisites <a name="prerequisites"></a>
+### Installation <a name="installation"></a>
+
+<!-- DOWNLOAD -->
+## Download <a name="download"></a>
+Get the android release version [here](https://google.com).
+
+<!-- RELATED -->
+## Related Project <a name="related"></a>
+* [Masanda API](https://github.com/TaufanP/masanda-api) provides API for Masanda Mobile Application.
+
+<!-- LICENSE -->
+## License <a name="license"></a>
+Masanda is released under GNU License.
+
+<!-- CONTACT -->
+## Contact <a name="contact"></a>
+Get in touch with me on my [Instagram](https://www.instagram.com/profennador/) or [LinkedIn](https://www.linkedin.com/in/taufan-p/).
