@@ -16,46 +16,14 @@ interface SearchProps {
   order: number;
 }
 
+interface BarcodeProps {
+  barcode: string | undefined;
+}
+
 const formDataConfig = {
   headers: {
     "content-type": "multipart/form-data",
   },
-};
-
-const getProductsApi = () => {
-  return new Promise<ResultProps>(async (resolve, reject) => {
-    try {
-      const {
-        data: { data, isSuccess, error, message },
-      } = await axios.get(`${api.product.getProducts}`);
-      resolve({ isSuccess, data, error, message });
-    } catch (error) {
-      reject({
-        isSuccess: false,
-        data: [],
-        error,
-        message: "Tidak dapat terhubung ke serveer",
-      });
-    }
-  });
-};
-
-const searchProductsApi = ({ dataSend, config }: ApiProps) => {
-  return new Promise<ResultProps>(async (resolve, reject) => {
-    try {
-      const {
-        data: { data, isSuccess, error, message },
-      } = await axios.post(`${api.product.searchProduct}`, dataSend, config);
-      resolve({ isSuccess, data, error, message });
-    } catch (error) {
-      reject({
-        isSuccess: false,
-        data: [],
-        error,
-        message: "Tidak dapat terhubung ke serveer",
-      });
-    }
-  });
 };
 
 const createProductApi = ({ dataSend }: ApiProps) => {
@@ -74,25 +42,25 @@ const createProductApi = ({ dataSend }: ApiProps) => {
         isSuccess: false,
         data: [],
         error,
-        message: "Tidak dapat terhubung ke serveer",
+        message: "Tidak dapat terhubung ke server",
       });
     }
   });
 };
 
-const deleteProductApi = ({ dataSend }: ApiProps) => {
+const deleteProductApi = ({ barcode }: BarcodeProps) => {
   return new Promise<ResultProps>(async (resolve, reject) => {
     try {
       const {
         data: { data, isSuccess, error, message },
-      } = await axios.post(`${api.product.deleteProduct}`, dataSend);
+      } = await axios.delete(`${api.product.base}/${barcode}`);
       resolve({ isSuccess, data, error, message });
     } catch (error) {
       reject({
         isSuccess: false,
         data: [],
         error,
-        message: "Tidak dapat terhubung ke serveer",
+        message: "Tidak dapat terhubung ke server",
       });
     }
   });
@@ -120,7 +88,7 @@ const updateProductApi = ({ dataSend }: ApiProps) => {
   });
 };
 
-const fetchGetProducts = () => {
+const getProductsApi = () => {
   return new Promise<ResultProps>(async (resolve, reject) => {
     try {
       const {
@@ -132,13 +100,13 @@ const fetchGetProducts = () => {
         isSuccess: false,
         data: [],
         error,
-        message: "Tidak dapat terhubung ke serveer",
+        message: "Tidak dapat terhubung ke server",
       });
     }
   });
 };
 
-const fetchSearchProducts = ({ keyword, field, order }: SearchProps) => {
+const searchProductsApi = ({ keyword, field, order }: SearchProps) => {
   return new Promise<ResultProps>(async (resolve, reject) => {
     try {
       const {
@@ -152,18 +120,16 @@ const fetchSearchProducts = ({ keyword, field, order }: SearchProps) => {
         isSuccess: false,
         data: [],
         error,
-        message: "Tidak dapat terhubung ke serveer",
+        message: "Tidak dapat terhubung ke server",
       });
     }
   });
 };
 
 export {
-  getProductsApi,
-  searchProductsApi,
   createProductApi,
   deleteProductApi,
   updateProductApi,
-  fetchGetProducts,
-  fetchSearchProducts,
+  getProductsApi,
+  searchProductsApi,
 };
