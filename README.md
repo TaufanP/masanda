@@ -73,7 +73,7 @@ baseUrl=YOUR_ENDPOINT_URL
 
 <!-- DOWNLOAD -->
 ## Download <a name="download"></a>
-Get the android release version [here](https://google.com).
+Get the android released version [here](https://google.com).
 
 <!-- RELATED -->
 ## Related Project <a name="related"></a>
