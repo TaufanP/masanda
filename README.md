@@ -71,7 +71,7 @@ baseUrl=YOUR_ENDPOINT_URL
 
 <!-- DOWNLOAD -->
 ## Download <a name="download"></a>
-Get the android released version [here](https://google.com).
+Get the android released version [here](http://bit.ly/MasandaApp).
 
 <!-- RELATED -->
 ## Related Project <a name="related"></a>
