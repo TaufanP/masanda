@@ -44,7 +44,7 @@ and immediately display the details.
 
 <!-- DEMO AND PREVIEW -->
 ## Demo and Preview <a name="demo-preview"></a>
-### Search and Filter
+### Search and Sort
 ### Add New Item
 ### Search Item with Barcode
 ### Add New Item with Barcode Scanned
