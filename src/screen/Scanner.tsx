@@ -77,7 +77,6 @@ const Scanner: FC<ScannerProps> = ({ navigation }) => {
 
   const onPressLeftStatic = useCallback(() => {
     setVisible(false);
-    setScannedCode("");
     navigation?.navigate(r.EDITING, {
       isEditing: false,
       detail: {
@@ -89,7 +88,8 @@ const Scanner: FC<ScannerProps> = ({ navigation }) => {
         image_name: "",
       },
     });
-  }, []);
+    setScannedCode("");
+  }, [scannedCode]);
 
   const onPressLeft = useCallback(() => {
     handleClosePress();
@@ -146,7 +146,7 @@ const Scanner: FC<ScannerProps> = ({ navigation }) => {
             setVisible,
             leftLabel: str.adding,
             rightLabel: str.rescan,
-            mainTitle: str.productNotFound,
+            mainTitle: `Produk ${scannedCode} tidak ditemukan.`,
             subTitle: str.addToStore,
             onPressRight: onPressRightStatic,
             onPressLeft: onPressLeftStatic,
