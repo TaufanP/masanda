@@ -120,7 +120,8 @@ const Editing: FC<EditingProps> = ({ navigation }) => {
     dataSend.append("product_name", product_name);
     dataSend.append("price", price);
     dataSend.append("barcode", barcode);
-    dataSend.append("product_image", imgFile);
+    if (imgFile.uri !== "") dataSend.append("product_image", imgFile);
+
     try {
       await createProductApi({
         dataSend,
