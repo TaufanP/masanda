@@ -45,10 +45,9 @@ and immediately display the details.
 <!-- DEMO AND PREVIEW -->
 ## Demo and Preview <a name="demo-preview"></a>
 ### Search and Sort
-### Add New Item
 ### Search Item with Barcode
+### Add New Item with Autopick Barcode
 ### Add New Item with Barcode Scanned
-### Autopick Barcode
 
 <!-- GETTING STARTED -->
 ## Getting Started <a name="getting-started"></a>
