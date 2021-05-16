@@ -44,7 +44,7 @@ and immediately display the details.
 
 <!-- DEMO AND PREVIEW -->
 ## Demo and Preview <a name="demo-preview"></a>
-<img src="https://user-images.githubusercontent.com/33638021/118388159-e757e900-b64c-11eb-81cc-d82e7b54af1b.gif" alt="Masanda Search Sort Preview" height="400"> | <img src="https://user-images.githubusercontent.com/33638021/118388432-a234b680-b64e-11eb-965f-a615299cfa21.gif" alt="Masanda Search Scanned Barcode Preview" height="400"> | <img src="https://user-images.githubusercontent.com/33638021/118388530-51718d80-b64f-11eb-9ba5-d620c44e50eb.gif" alt="Masanda Add New Item with Autopick Barcode" height="400"> | <img src="https://user-images.githubusercontent.com/33638021/118388159-e757e900-b64c-11eb-81cc-d82e7b54af1b.gif" alt="Masanda Search Sort Preview" height="400">
+<img src="https://user-images.githubusercontent.com/33638021/118388159-e757e900-b64c-11eb-81cc-d82e7b54af1b.gif" alt="Masanda Search Sort Preview" height="400"> | <img src="https://user-images.githubusercontent.com/33638021/118388432-a234b680-b64e-11eb-965f-a615299cfa21.gif" alt="Masanda Search Scanned Barcode Preview" height="400"> | <img src="https://user-images.githubusercontent.com/33638021/118388530-51718d80-b64f-11eb-9ba5-d620c44e50eb.gif" alt="Masanda Add New Item with Autopick Barcode" height="400"> | <img src="https://user-images.githubusercontent.com/33638021/118391153-0b232b00-b65d-11eb-8ad9-9d586f06bdeb.gif" alt="Masanda  Add New Item with Barcode Scanned" height="400">
 --- | --- | --- | ---
 Search and Sort | Search Item with Barcode | Add New Item with Autopick Barcode | Add New Item with Barcode Scanned
 
