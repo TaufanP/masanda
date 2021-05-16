@@ -31,7 +31,7 @@
 <!-- BACKGROUND -->
 ## Background <a name="background"></a>
 <p>
-Came from a store owner found that it’s difficult for her employees to find a product price. They have to memorize and taking a note of it. Another challenges come when the employees are replaced. They have to start it all over again. Masanda Let the user to add a new or find an item quickly, it only needs name and price. The search feature is accessible by scanning product barcode
+Came from a store owner found that it’s difficult for her employees to find a product price. They have to memorize and taking a note of it. Another challenges come when the employees are replaced. They have to start it all over again. Masanda let the user to add a new or find an item quickly, it only needs name and price. The search feature is accessible by scanning product barcode
 and immediately display the details.
 </p>
 
