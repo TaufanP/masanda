@@ -1,7 +1,13 @@
 import { CompositeNavigationProp, useRoute } from "@react-navigation/core";
 import { RouteProp } from "@react-navigation/native";
 import React, { FC, ReactNode, useCallback, useEffect, useState } from "react";
-import { Dimensions, Keyboard, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  Keyboard,
+  StyleSheet,
+  View,
+  BackHandler,
+} from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import {
   AppCanvas,
@@ -54,7 +60,7 @@ interface StaticTypeProps {
   [key: string]: StaticBottomSheetProps;
 }
 
-const Editing: FC<EditingProps> = () => {
+const Editing: FC<EditingProps> = ({ navigation }) => {
   const { defaultState, fancyType } = fan;
   const [fancyBarState, setFancyBarState] = useState<FancyTypes>(defaultState);
   const route = useRoute<RouteProp<StackParamsList, "EDITING">>();
@@ -77,6 +83,7 @@ const Editing: FC<EditingProps> = () => {
   const s = styles();
 
   const onPressImageField = useCallback(() => {
+    Keyboard.dismiss();
     setVisible(true);
     setStaticType("ImagePicker");
   }, []);
@@ -225,11 +232,13 @@ const Editing: FC<EditingProps> = () => {
         },
         (response) => {
           setVisible(false);
-          setImgFile({
-            name: response.fileName,
-            type: response.type,
-            uri: response.uri,
-          });
+          if (!response.didCancel) {
+            setImgFile({
+              name: response.fileName,
+              type: response.type,
+              uri: response.uri,
+            });
+          }
         }
       );
   };
@@ -241,11 +250,13 @@ const Editing: FC<EditingProps> = () => {
       },
       (response) => {
         setVisible(false);
-        setImgFile({
-          name: response.fileName,
-          type: response.type,
-          uri: response.uri,
-        });
+        if (!response.didCancel) {
+          setImgFile({
+            name: response.fileName,
+            type: response.type,
+            uri: response.uri,
+          });
+        }
       }
     );
 
@@ -277,6 +288,22 @@ const Editing: FC<EditingProps> = () => {
     _checkingParams();
   }, []);
 
+  useEffect(() => {
+    const backAction = () => {
+      if (isScanning) {
+        setIsScanning(false);
+        return true;
+      }
+      navigation?.goBack();
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  });
+
   return (
     <AppCanvas {...{ fancyBarState, setFancyBarState }}>
       <ImgField onPress={onPressImageField} uri={imgFile.uri} />
@@ -289,7 +316,10 @@ const Editing: FC<EditingProps> = () => {
           maxLength={15}
           defaultValue={dataForm.barcode.toString()}
           isExtra={true}
-          extraAction={() => setIsScanning(true)}
+          extraAction={() => {
+            Keyboard.dismiss();
+            setIsScanning(true);
+          }}
         />
         <TextField
           placeholder={str.productName}
