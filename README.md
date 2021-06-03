@@ -78,6 +78,7 @@ Get the android released version [here](http://bit.ly/MasandaApp).
 <!-- RELATED -->
 ## Related Project <a name="related"></a>
 * [Masanda API](https://github.com/TaufanP/masanda-api) provides API for Masanda Mobile Application.
+* [Presentation](https://www.behance.net/gallery/119872435/Toko-Masanda-Application) behance portfolio.
 
 <!-- LICENSE -->
 ## License <a name="license"></a>
